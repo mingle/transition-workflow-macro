@@ -38,7 +38,7 @@ status.property_value_details.collect(&:value).each do |prop_value|
     property_value.position
   end
   pv_transitions.each do |t|
-    puts "  #{t.name}: #{t.if_card_has_properties.detect {|property| property.name.downcase == 'status'}.value} => #{t.will_set_card_properties.detect {|property| property.name.downcase == 'status'}.value}"
+    puts "  #{t.if_card_has_properties.detect {|property| property.name.downcase == 'status'}.value}->#{t.will_set_card_properties.detect {|property| property.name.downcase == 'status'}.value}: #{t.name}"
   end
 end
 
