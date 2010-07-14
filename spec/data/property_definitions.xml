@@ -1,0 +1,1091 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<property_definitions type="array">
+  <property_definition>
+    <id type="integer">120</id>
+    <name>Date Accepted</name>
+    <description nil="true"></description>
+    <data_type>date</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">true</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">true</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_accepted_on</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any date</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">121</id>
+    <name>Date Analysis Ended</name>
+    <description nil="true"></description>
+    <data_type>date</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">true</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">true</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_analysis_completed_on</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any date</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">139</id>
+    <name>Date Analysis Started</name>
+    <description nil="true"></description>
+    <data_type>date</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">true</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">true</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_date_analysis_started</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any date</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">119</id>
+    <name>Date Created</name>
+    <description nil="true"></description>
+    <data_type>date</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">true</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">true</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_added_on</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any date</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">114</id>
+    <name>Date Development Ended</name>
+    <description nil="true"></description>
+    <data_type>date</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">true</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">true</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_enddate</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any date</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">113</id>
+    <name>Date Development Started</name>
+    <description nil="true"></description>
+    <data_type>date</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">true</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">true</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_startdate</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any date</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">130</id>
+    <name>Date Fixed</name>
+    <description nil="true"></description>
+    <data_type>date</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_fixed_on</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any date</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/24.xml">
+        <name>Defect</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">134</id>
+    <name>Date of BA Approval</name>
+    <description nil="true"></description>
+    <data_type>date</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">true</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">true</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_ba_approval_on</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any date</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">131</id>
+    <name>Date Reported</name>
+    <description nil="true"></description>
+    <data_type>date</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_reported_on</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any date</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/24.xml">
+        <name>Defect</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">135</id>
+    <name>Date Task Completed</name>
+    <description nil="true"></description>
+    <data_type>date</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">true</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">true</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_task_completed_on</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any date</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/25.xml">
+        <name>Task</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">129</id>
+    <name>Date Testing Ended</name>
+    <description nil="true"></description>
+    <data_type>date</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">true</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">true</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_testing_completed_on</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any date</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">128</id>
+    <name>Date Testing Started</name>
+    <description nil="true"></description>
+    <data_type>date</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">true</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">true</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_testing_started_on</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any date</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">132</id>
+    <name>Days Open</name>
+    <description nil="true"></description>
+    <data_type>numeric</data_type>
+    <is_numeric type="boolean">true</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_days_open</column_name>
+    <position nil="true"></position>
+    <property_values_description>Formula</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/24.xml">
+        <name>Defect</name>
+      </card_type>
+    </card_types>
+    <formula>('Date Fixed' - 'Date Reported')</formula>
+  </property_definition>
+  <property_definition>
+    <id type="integer">126</id>
+    <name>Defect Status</name>
+    <description nil="true"></description>
+    <data_type>string</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">true</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_defect_status</column_name>
+    <position nil="true"></position>
+    <property_values_description>Managed text list</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/24.xml">
+        <name>Defect</name>
+      </card_type>
+    </card_types>
+    <property_value_details type="array">
+      <property_value>
+        <id type="integer">137</id>
+        <value>New</value>
+        <color nil="true"></color>
+        <position type="integer">1</position>
+      </property_value>
+      <property_value>
+        <id type="integer">138</id>
+        <value>Fix in progress</value>
+        <color nil="true"></color>
+        <position type="integer">2</position>
+      </property_value>
+      <property_value>
+        <id type="integer">139</id>
+        <value>Fixed</value>
+        <color nil="true"></color>
+        <position type="integer">3</position>
+      </property_value>
+    </property_value_details>
+    <is_managed type="boolean">true</is_managed>
+  </property_definition>
+  <property_definition>
+    <id type="integer">133</id>
+    <name>Depend on</name>
+    <description nil="true"></description>
+    <data_type>card</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_depend_on_card_id</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any card</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/29.xml">
+        <name>Epic Story</name>
+      </card_type>
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/28.xml">
+        <name>Feature</name>
+      </card_type>
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/25.xml">
+        <name>Task</name>
+      </card_type>
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/24.xml">
+        <name>Defect</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">138</id>
+    <name>End Date</name>
+    <description nil="true"></description>
+    <data_type>date</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_end_date</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any date</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/27.xml">
+        <name>Release</name>
+      </card_type>
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/26.xml">
+        <name>Sprint</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">124</id>
+    <name>Epic Story</name>
+    <description nil="true"></description>
+    <data_type>card</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_feature___feature_card_id</column_name>
+    <position type="integer">1</position>
+    <property_values_description>Any card used in tree</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/28.xml">
+        <name>Feature</name>
+      </card_type>
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">136</id>
+    <name>Estimated Hours</name>
+    <description nil="true"></description>
+    <data_type>numeric</data_type>
+    <is_numeric type="boolean">true</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">true</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_estimated_hours</column_name>
+    <position nil="true"></position>
+    <property_values_description>Managed number list</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/25.xml">
+        <name>Task</name>
+      </card_type>
+    </card_types>
+    <property_value_details type="array">
+      <property_value>
+        <id type="integer">144</id>
+        <value>0</value>
+        <color nil="true"></color>
+        <position type="integer">1</position>
+      </property_value>
+      <property_value>
+        <id type="integer">145</id>
+        <value>0.5</value>
+        <color nil="true"></color>
+        <position type="integer">2</position>
+      </property_value>
+      <property_value>
+        <id type="integer">150</id>
+        <value>1.0</value>
+        <color nil="true"></color>
+        <position type="integer">3</position>
+      </property_value>
+      <property_value>
+        <id type="integer">146</id>
+        <value>1.5</value>
+        <color nil="true"></color>
+        <position type="integer">4</position>
+      </property_value>
+      <property_value>
+        <id type="integer">151</id>
+        <value>2.0</value>
+        <color nil="true"></color>
+        <position type="integer">5</position>
+      </property_value>
+      <property_value>
+        <id type="integer">147</id>
+        <value>2.5</value>
+        <color nil="true"></color>
+        <position type="integer">6</position>
+      </property_value>
+      <property_value>
+        <id type="integer">152</id>
+        <value>3.0</value>
+        <color nil="true"></color>
+        <position type="integer">7</position>
+      </property_value>
+      <property_value>
+        <id type="integer">148</id>
+        <value>3.5</value>
+        <color nil="true"></color>
+        <position type="integer">8</position>
+      </property_value>
+      <property_value>
+        <id type="integer">149</id>
+        <value>4.0</value>
+        <color nil="true"></color>
+        <position type="integer">9</position>
+      </property_value>
+    </property_value_details>
+    <is_managed type="boolean">true</is_managed>
+  </property_definition>
+  <property_definition>
+    <id type="integer">140</id>
+    <name>Estimated Task Hours</name>
+    <description nil="true"></description>
+    <data_type>numeric</data_type>
+    <is_numeric type="boolean">true</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_estimated_hours_from_tasks</column_name>
+    <position nil="true"></position>
+    <property_values_description>Aggregate</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">125</id>
+    <name>Feature</name>
+    <description nil="true"></description>
+    <data_type>card</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_feature___feature_1_card_id</column_name>
+    <position type="integer">2</position>
+    <property_values_description>Any card used in tree</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">118</id>
+    <name>Owner</name>
+    <description>Individual assigned to a work item</description>
+    <data_type>user</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_owner_user_id</column_name>
+    <position nil="true"></position>
+    <property_values_description>Automatically generated from the team list</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/25.xml">
+        <name>Task</name>
+      </card_type>
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/24.xml">
+        <name>Defect</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">143</id>
+    <name>Points Completed</name>
+    <description nil="true"></description>
+    <data_type>numeric</data_type>
+    <is_numeric type="boolean">true</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_completed_points_in_release</column_name>
+    <position nil="true"></position>
+    <property_values_description>Aggregate</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/27.xml">
+        <name>Release</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">142</id>
+    <name>Points Scheduled</name>
+    <description nil="true"></description>
+    <data_type>numeric</data_type>
+    <is_numeric type="boolean">true</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_total_points_in_release</column_name>
+    <position nil="true"></position>
+    <property_values_description>Aggregate</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/27.xml">
+        <name>Release</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">112</id>
+    <name>Priority</name>
+    <description nil="true"></description>
+    <data_type>string</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">true</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_priority</column_name>
+    <position nil="true"></position>
+    <property_values_description>Managed text list</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/25.xml">
+        <name>Task</name>
+      </card_type>
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/24.xml">
+        <name>Defect</name>
+      </card_type>
+    </card_types>
+    <property_value_details type="array">
+      <property_value>
+        <id type="integer">121</id>
+        <value>Low</value>
+        <color>#f1ff26</color>
+        <position type="integer">1</position>
+      </property_value>
+      <property_value>
+        <id type="integer">120</id>
+        <value>Medium</value>
+        <color>#ff6600</color>
+        <position type="integer">2</position>
+      </property_value>
+      <property_value>
+        <id type="integer">119</id>
+        <value>High</value>
+        <color>#b30600</color>
+        <position type="integer">3</position>
+      </property_value>
+    </property_value_details>
+    <is_managed type="boolean">true</is_managed>
+  </property_definition>
+  <property_definition>
+    <id type="integer">116</id>
+    <name>Release</name>
+    <description nil="true"></description>
+    <data_type>card</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_planning___release_card_id</column_name>
+    <position type="integer">1</position>
+    <property_values_description>Any card used in tree</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/26.xml">
+        <name>Sprint</name>
+      </card_type>
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/25.xml">
+        <name>Task</name>
+      </card_type>
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/24.xml">
+        <name>Defect</name>
+      </card_type>
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">147</id>
+    <name>Scope</name>
+    <description>Used to set scope on a story, even if it is not yet scheduled (ie, it's not on the Product Schedule tree), used by transitions "Add to Current Sprint" and "Add to Next Sprint"</description>
+    <data_type>card</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">true</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">true</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_scope_card_id</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any card</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">117</id>
+    <name>Sprint</name>
+    <description nil="true"></description>
+    <data_type>card</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_planning___sprint_card_id</column_name>
+    <position type="integer">2</position>
+    <property_values_description>Any card used in tree</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/25.xml">
+        <name>Task</name>
+      </card_type>
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/24.xml">
+        <name>Defect</name>
+      </card_type>
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">145</id>
+    <name>Sprint Added to Scope</name>
+    <description nil="true"></description>
+    <data_type>card</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">true</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">true</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_added_to_scf703c40910ba5591</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any card</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">146</id>
+    <name>Sprint Completed</name>
+    <description nil="true"></description>
+    <data_type>card</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">true</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">true</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_sprint_completed_card_id</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any card</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">137</id>
+    <name>Start Date</name>
+    <description nil="true"></description>
+    <data_type>date</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_start_date</column_name>
+    <position nil="true"></position>
+    <property_values_description>Any date</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/27.xml">
+        <name>Release</name>
+      </card_type>
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/26.xml">
+        <name>Sprint</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">111</id>
+    <name>Status</name>
+    <description nil="true"></description>
+    <data_type>string</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">true</restricted>
+    <transition_only type="boolean">true</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_status</column_name>
+    <position nil="true"></position>
+    <property_values_description>Managed text list</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+    <property_value_details type="array">
+      <property_value>
+        <id type="integer">122</id>
+        <value>New</value>
+        <color>#9e66ff</color>
+        <position type="integer">1</position>
+      </property_value>
+      <property_value>
+        <id type="integer">127</id>
+        <value>Ready for Analysis</value>
+        <color>#ff8cec</color>
+        <position type="integer">2</position>
+      </property_value>
+      <property_value>
+        <id type="integer">128</id>
+        <value>In Analysis</value>
+        <color>#f200ea</color>
+        <position type="integer">3</position>
+      </property_value>
+      <property_value>
+        <id type="integer">123</id>
+        <value>Ready for Development</value>
+        <color>#f23000</color>
+        <position type="integer">4</position>
+      </property_value>
+      <property_value>
+        <id type="integer">124</id>
+        <value>In Development</value>
+        <color>#f29900</color>
+        <position type="integer">5</position>
+      </property_value>
+      <property_value>
+        <id type="integer">142</id>
+        <value>In BA Review</value>
+        <color>#26ffa8</color>
+        <position type="integer">6</position>
+      </property_value>
+      <property_value>
+        <id type="integer">125</id>
+        <value>Ready for Testing</value>
+        <color>#f2d200</color>
+        <position type="integer">7</position>
+      </property_value>
+      <property_value>
+        <id type="integer">126</id>
+        <value>In Testing</value>
+        <color>#81f200</color>
+        <position type="integer">8</position>
+      </property_value>
+      <property_value>
+        <id type="integer">129</id>
+        <value>Ready for Signoff</value>
+        <color>#059900</color>
+        <position type="integer">9</position>
+      </property_value>
+      <property_value>
+        <id type="integer">130</id>
+        <value>Accepted</value>
+        <color>#002680</color>
+        <position type="integer">10</position>
+      </property_value>
+    </property_value_details>
+    <is_managed type="boolean">true</is_managed>
+  </property_definition>
+  <property_definition>
+    <id type="integer">115</id>
+    <name>Story</name>
+    <description nil="true"></description>
+    <data_type>card</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_planning___story_card_id</column_name>
+    <position type="integer">3</position>
+    <property_values_description>Any card used in tree</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/25.xml">
+        <name>Task</name>
+      </card_type>
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/24.xml">
+        <name>Defect</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">122</id>
+    <name>Story Points</name>
+    <description>Fibonacci series from 1 to 13</description>
+    <data_type>numeric</data_type>
+    <is_numeric type="boolean">true</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">true</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_estimate___planning</column_name>
+    <position nil="true"></position>
+    <property_values_description>Managed number list</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+        <name>Story</name>
+      </card_type>
+    </card_types>
+    <property_value_details type="array">
+      <property_value>
+        <id type="integer">140</id>
+        <value>1</value>
+        <color nil="true"></color>
+        <position type="integer">1</position>
+      </property_value>
+      <property_value>
+        <id type="integer">136</id>
+        <value>2</value>
+        <color nil="true"></color>
+        <position type="integer">2</position>
+      </property_value>
+      <property_value>
+        <id type="integer">141</id>
+        <value>3</value>
+        <color nil="true"></color>
+        <position type="integer">3</position>
+      </property_value>
+      <property_value>
+        <id type="integer">135</id>
+        <value>5</value>
+        <color nil="true"></color>
+        <position type="integer">4</position>
+      </property_value>
+      <property_value>
+        <id type="integer">131</id>
+        <value>8</value>
+        <color nil="true"></color>
+        <position type="integer">5</position>
+      </property_value>
+      <property_value>
+        <id type="integer">143</id>
+        <value>13</value>
+        <color nil="true"></color>
+        <position type="integer">6</position>
+      </property_value>
+    </property_value_details>
+    <is_managed type="boolean">true</is_managed>
+  </property_definition>
+  <property_definition>
+    <id type="integer">127</id>
+    <name>Task</name>
+    <description nil="true"></description>
+    <data_type>card</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_planning___task_card_id</column_name>
+    <position type="integer">4</position>
+    <property_values_description>Any card used in tree</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/24.xml">
+        <name>Defect</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">123</id>
+    <name>Task Status</name>
+    <description nil="true"></description>
+    <data_type>string</data_type>
+    <is_numeric type="boolean">false</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">true</restricted>
+    <transition_only type="boolean">true</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_task_status</column_name>
+    <position nil="true"></position>
+    <property_values_description>Managed text list</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/25.xml">
+        <name>Task</name>
+      </card_type>
+    </card_types>
+    <property_value_details type="array">
+      <property_value>
+        <id type="integer">133</id>
+        <value>New</value>
+        <color>#ffdb26</color>
+        <position type="integer">1</position>
+      </property_value>
+      <property_value>
+        <id type="integer">134</id>
+        <value>In progress</value>
+        <color>#3aff33</color>
+        <position type="integer">2</position>
+      </property_value>
+      <property_value>
+        <id type="integer">132</id>
+        <value>Done</value>
+        <color>#003300</color>
+        <position type="integer">3</position>
+      </property_value>
+    </property_value_details>
+    <is_managed type="boolean">true</is_managed>
+  </property_definition>
+  <property_definition>
+    <id type="integer">144</id>
+    <name>Total Points in Sprint</name>
+    <description nil="true"></description>
+    <data_type>numeric</data_type>
+    <is_numeric type="boolean">true</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_total_points_in_sprint</column_name>
+    <position nil="true"></position>
+    <property_values_description>Aggregate</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/26.xml">
+        <name>Sprint</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+  <property_definition>
+    <id type="integer">141</id>
+    <name>Velocity</name>
+    <description nil="true"></description>
+    <data_type>numeric</data_type>
+    <is_numeric type="boolean">true</is_numeric>
+    <hidden type="boolean">false</hidden>
+    <restricted type="boolean">false</restricted>
+    <transition_only type="boolean">false</transition_only>
+    <project url="http://localhost:4001/api/v2/projects/abc123.xml">
+      <name>abc123</name>
+      <identifier>abc123</identifier>
+    </project>
+    <column_name>cp_velocity</column_name>
+    <position nil="true"></position>
+    <property_values_description>Aggregate</property_values_description>
+    <card_types type="array">
+      <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/26.xml">
+        <name>Sprint</name>
+      </card_type>
+    </card_types>
+  </property_definition>
+</property_definitions>
