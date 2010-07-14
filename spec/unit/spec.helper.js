@@ -4,7 +4,7 @@ function toXmldomElement(text){
   return div.childNodes[0];
 }
 
-acceptedTransition = '<id type="integer">49</id>'
+acceptedTransition  = '<id type="integer">49</id>'
 acceptedTransition += '<name>Accepted</name>'
 acceptedTransition += '<require_comment type="boolean">false</require_comment>'
 acceptedTransition += '<transition_execution_url>http://localhost:4001/api/v2/projects/abc123/transition_executions/49.xml</transition_execution_url>'
