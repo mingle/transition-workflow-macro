@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transitions type="array">
+  <transition>
+    <name>Close</name>
+    <if_card_has_properties type="array">
+      <property type_description="Managed text list" hidden="false">
+        <name>Status</name>
+        <value>New</value>
+      </property>
+    </if_card_has_properties>
+    <if_card_has_properties_set type="array">
+    </if_card_has_properties_set>
+    <will_set_card_properties type="array">
+      <property type_description="Managed text list" hidden="false">
+        <name>Status</name>
+        <value>Closed</value>
+      </property>
+    </will_set_card_properties>
+    <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+      <name>Story</name>
+    </card_type>
+  </transition>
+  <transition>
+    <name>New2NotSet</name>
+    <if_card_has_properties type="array">
+      <property type_description="Managed text list" hidden="false">
+        <name>Status</name>
+        <value>New</value>
+      </property>
+    </if_card_has_properties>
+    <if_card_has_properties_set type="array">
+    </if_card_has_properties_set>
+    <will_set_card_properties type="array">
+      <property type_description="Managed text list" hidden="false">
+        <name>Status</name>
+        <value nil="true"/>
+      </property>
+    </will_set_card_properties>
+    <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+      <name>Story</name>
+    </card_type>
+  </transition>
+</transitions>

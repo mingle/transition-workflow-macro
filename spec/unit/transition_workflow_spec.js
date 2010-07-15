@@ -7,6 +7,10 @@ describe 'TransitionWorkflow'
       TransitionWorkflow = MinglePluginTransitionWorkflowFacade;
     end
 
+    after_each
+      window.debug = false
+    end
+
     it 'load transitions from data file'
       var workflow = new TransitionWorkflow;
       var transitions = workflow.parseTransitions(getData('transitions'));
@@ -114,6 +118,21 @@ describe 'TransitionWorkflow'
       expected.each(function(a, index){
         transitions[index].should_eql(a);
       });
+    end
+    
+    it 'should sort transition by from properties'
+      var workflow = new TransitionWorkflow;
+      var transitions = workflow.parseTransitions(getData('transitions_for_sorting_from_different_property_value'));
+      var status = statusPropertyDefintionStub();
+
+      transitions.sortByPropertyDefinition(status).pluck('name').should_eql(['Close', 'Open']);
+    end
+
+    it 'should sort transition by to properties when from same property value'
+      var workflow = new TransitionWorkflow;
+      var transitions = workflow.parseTransitions(getData('transitions_for_sorting_from_same_property_value'));
+      var status = statusPropertyDefintionStub();
+      transitions.sortByPropertyDefinition(status).pluck('name').should_eql(['New2NotSet', 'Close']);
     end
 
     it 'find transitions by card type and property definition name should not be case sensitive'
