@@ -1,6 +1,12 @@
 
+
+
 describe 'TransitionWorkflow'
   describe '.findAllTransitions()'
+    before
+      TransitionWorkflow = MinglePluginTransitionWorkflowFacade;
+    end
+
     it 'load transitions from data file'
       var workflow = new TransitionWorkflow;
       var transitions = workflow.parseTransitions(getData('transitions'));
