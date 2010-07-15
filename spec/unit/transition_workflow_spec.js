@@ -44,6 +44,13 @@ describe 'TransitionWorkflow'
       var workflow = new TransitionWorkflow;
       var transitions = workflow.parseTransitions(getData('transitions'));
       transitions.findByCardTypeName('Story').length.should_equal(12);
+      transitions.findByCardTypeName(null).length.should_equal(0);
+    end
+
+    it 'filter transitions by card type should be caseinsensitive'
+      var workflow = new TransitionWorkflow;
+      var transitions = workflow.parseTransitions(getData('transitions'));
+      transitions.findByCardTypeName('sTory').length.should_equal(12);
     end
 
     it 'filter transitions that modify a specific property definition'
@@ -59,18 +66,23 @@ describe 'TransitionWorkflow'
       transitions.thatModifyPropertyDefinition('Status').findByCardTypeName('Story').length.should_equal(12);
     end
 
-    // transitions.select {|t| t.if_card_has_properties.any? {|property| property.name.downcase == 'status' && property.value == prop_value}}
-    it 'filter transitions that start from a specific property value'
-      var workflow = new TransitionWorkflow;
-      var transitions = workflow.parseTransitions(getData('transitions'));
-      transitions.thatStartWithProperty({name: 'Status', value: 'New'}).length.should_equal(2);
-    end
-
     it 'filter property definitions by name'
       var workflow = new TransitionWorkflow;
       var property_definitions = workflow.parsePropertyDefinitions(getData('property_definitions'));
       property_definitions.findByName('Story').name.should_equal('Story');
       property_definitions.findByName('NotExist').should_be_null();
+    end
+
+    it 'property definition value position map'
+      var workflow = new TransitionWorkflow;
+      var property_definitions = workflow.parsePropertyDefinitions(getData('property_definitions'));
+      var status = property_definitions.findByName('Status')
+      var map = status.valuePositionMap();
+      map.get('(any)').should_equal(-3);
+      map.get('(set)').should_equal(-2);
+      map.get(null).should_equal(-1);
+      map.get('New').should_equal(1);
+      map.get('Ready for Testing').should_equal(7);
     end
 
     it 'find the starting and ending transitions'
@@ -97,6 +109,13 @@ describe 'TransitionWorkflow'
         transitions[index].should_eql(a);
       });
     end
+
+    it 'find transitions by card type and property definition name should not be case sensitive'
+      var workflow = new TransitionWorkflow;
+      var transitions = workflow.markup('storY', 'statuS', getData('transitions'), getData('property_definitions'));
+      transitions.length.should_eql(12);
+    end
+
   end
 
   describe 'Transition'
