@@ -46,7 +46,7 @@ describe 'TransitionWorkflow'
       transitions.findByCardTypeName('Story').length.should_equal(12);
     end
 
-    it 'filter transitions by property definition'
+    it 'filter transitions that modify a specific property definition'
       var workflow = new TransitionWorkflow;
       var transitions = workflow.parseTransitions(getData('transitions'));
       transitions.thatModifyPropertyDefinition('Status').length.should_equal(12);
@@ -57,6 +57,20 @@ describe 'TransitionWorkflow'
       var transitions = workflow.parseTransitions(getData('transitions'));
       transitions.findByCardTypeName('Story').thatModifyPropertyDefinition('Status').length.should_equal(12);
       transitions.thatModifyPropertyDefinition('Status').findByCardTypeName('Story').length.should_equal(12);
+    end
+
+    // transitions.select {|t| t.if_card_has_properties.any? {|property| property.name.downcase == 'status' && property.value == prop_value}}
+    it 'filter transitions that start from a specific property value'
+      var workflow = new TransitionWorkflow;
+      var transitions = workflow.parseTransitions(getData('transitions'));
+      transitions.thatStartWithProperty({name: 'Status', value: 'New'}).length.should_equal(2);
+    end
+
+    it 'filter property definitions by name'
+      var workflow = new TransitionWorkflow;
+      var property_definitions = workflow.parsePropertyDefinitions(getData('property_definitions'));
+      property_definitions.findByName('Story').name.should_equal('Story');
+      property_definitions.findByName('NotExist').should_be_null();
     end
 
     it 'find the starting and ending transitions'
@@ -77,7 +91,11 @@ describe 'TransitionWorkflow'
 
       // var expected = ["New->Ready for Analysis: Add to Current Sprint", "New->Ready for Analysis: Add to Next Sprint"]
       var workflow = new TransitionWorkflow;
-      workflow.markup('Story', 'Status', getData('transitions'), getData('property_definitions')).should_eql(expected)
+      var transitions = workflow.markup('Story', 'Status', getData('transitions'), getData('property_definitions'));
+      transitions.length.should_eql(12);
+      expected.each(function(a, index){
+        transitions[index].should_eql(a);
+      });
     end
   end
 
