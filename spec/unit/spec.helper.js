@@ -5,6 +5,11 @@ function getData(name) {
   return request.transport.responseText;
 }
 
+function log(msg) {
+  if (window.debug) {
+    console.log(msg);
+  }
+}
 
 function statusPropertyDefintionStub() {
   return {

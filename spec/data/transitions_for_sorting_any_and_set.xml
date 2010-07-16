@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transitions type="array">
+  <transition>
+    <name>not_set_to_new</name>
+    <if_card_has_properties type="array">
+      <property type_description="Managed text list" hidden="false">
+        <name>Status</name>
+        <value nil="true"/>
+      </property>
+    </if_card_has_properties>
+    <if_card_has_properties_set type="array">
+    </if_card_has_properties_set>
+    <will_set_card_properties type="array">
+      <property type_description="Managed text list" hidden="false">
+        <name>Status</name>
+        <value>New</value>
+      </property>
+    </will_set_card_properties>
+    <card_type url="http://localhost:4001/api/v2/projects/abc123/card_types/23.xml">
+      <name>Story</name>
+    </card_type>
+  </transition>
+  <transition>
+    <id type="integer">65</id>
+    <name>any_to_not_set</name>
+    <if_card_has_properties type="array">
+    </if_card_has_properties>
+    <if_card_has_properties_set type="array">
+    </if_card_has_properties_set>
+    <will_set_card_properties type="array">
+      <property type_description="Managed text list" hidden="false">
+        <name>Status</name>
+        <value nil="true"/>
+      </property>
+    </will_set_card_properties>
+  </transition>
+  <transition>
+    <id type="integer">64</id>
+    <name>any_to_new</name>
+    <if_card_has_properties type="array">
+    </if_card_has_properties>
+    <if_card_has_properties_set type="array">
+    </if_card_has_properties_set>
+    <will_set_card_properties type="array">
+      <property type_description="Managed text list" hidden="false">
+        <name>Status</name>
+        <value>New</value>
+      </property>
+    </will_set_card_properties>
+  </transition>
+  <transition>
+    <id type="integer">66</id>
+    <name>set_to_not_set</name>
+    <require_comment type="boolean">false</require_comment>
+    <if_card_has_properties type="array">
+    </if_card_has_properties>
+    <if_card_has_properties_set type="array">
+      <property_definition url="http://localhost:4001/api/v2/projects/b/property_definitions/148.xml">
+        <id type="integer">148</id>
+        <name>Status</name>
+        <description></description>
+        <data_type>string</data_type>
+        <is_numeric type="boolean">false</is_numeric>
+        <hidden type="boolean">false</hidden>
+        <restricted type="boolean">false</restricted>
+        <transition_only type="boolean">false</transition_only>
+        <project url="http://localhost:4001/api/v2/projects/b.xml">
+          <name>b</name>
+          <identifier>b</identifier>
+        </project>
+        <column_name>cp_status</column_name>
+        <position nil="true"/>
+        <property_values_description>Managed text list</property_values_description>
+        <card_types type="array">
+          <card_type url="http://localhost:4001/api/v2/projects/b/card_types/30.xml">
+            <name>Card</name>
+          </card_type>
+        </card_types>
+        <property_value_details type="array">
+          <property_value>
+            <value>closed</value>
+          </property_value>
+          <property_value>
+            <value>new</value>
+          </property_value>
+        </property_value_details>
+        <is_managed type="boolean">true</is_managed>
+      </property_definition>
+    </if_card_has_properties_set>
+    <will_set_card_properties type="array">
+      <property type_description="Managed text list" hidden="false">
+        <name>Status</name>
+        <value nil="true"/>
+      </property>
+    </will_set_card_properties>
+  </transition>
+</transitions>

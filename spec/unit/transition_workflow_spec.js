@@ -135,6 +135,22 @@ describe 'TransitionWorkflow'
       transitions.sortByPropertyDefinition(status).pluck('name').should_eql(['New2NotSet', 'Close']);
     end
 
+    it 'should sort transition by name when from and to are same property value'
+      var workflow = new TransitionWorkflow;
+      var transitions = workflow.parseTransitions(getData('transitions_for_sorting_same_from_and_to_property_value'));
+      var status = statusPropertyDefintionStub();
+      transitions.sortByPropertyDefinition(status).pluck('name').should_eql(['Close1', 'Close3']);
+    end
+
+    it 'should sort transition for property values: (any) and (set)'
+      var workflow = new TransitionWorkflow;
+      window.debug = true
+      var transitions = workflow.parseTransitions(getData('transitions_for_sorting_any_and_set'));
+      transitions.length.should_eql(4);
+      var status = statusPropertyDefintionStub();
+      transitions.sortByPropertyDefinition(status).pluck('name').should_eql(['any_to_not_set', 'any_to_new', 'set_to_not_set', 'not_set_to_new']);
+    end
+
     it 'find transitions by card type and property definition name should not be case sensitive'
       var workflow = new TransitionWorkflow;
       var transitions = workflow.markup('storY', 'statuS', getData('transitions'), getData('property_definitions'));
