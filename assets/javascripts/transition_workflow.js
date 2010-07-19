@@ -36,7 +36,11 @@ function loadMinglePluginTransitionWorkflowFacade() {
     parseElementValue: function(element) {
       var value = null;
       if (this.isTextElement(element)) {
-        if (element.getAttribute('nil') != 'true') {
+        if (element.getAttribute('nil') == 'true') {
+          if (element.tagName == 'value') {
+            value = '(not set)';
+          }
+        } else {
           var nodeValue = element.firstChild ? element.firstChild.nodeValue : '';
           var type = element.getAttribute('type');
           if(type == 'integer') {
@@ -68,8 +72,8 @@ function loadMinglePluginTransitionWorkflowFacade() {
         return property.name == property_name;
       };
 
-      var from = PropertyDefinition.valueToMarkup(this.findFromProperty(property_name).value);
-      var to = PropertyDefinition.valueToMarkup(this.will_set_card_properties.detect(withSamePropertyName).value);
+      var from = this.findFromProperty(property_name).value;
+      var to = this.will_set_card_properties.detect(withSamePropertyName).value;
 
       return {from: from, to: to, name: this.name};
     },
@@ -140,7 +144,7 @@ function loadMinglePluginTransitionWorkflowFacade() {
   var PropertyDefinition = {
     
     participantsFor: function(transitionMarkups) {
-      return this.allParticipants().select(function(property_value){
+      return this.allValues().select(function(property_value){
           return transitionMarkups.any(function(transitionMarkup) {
             return transitionMarkup.from == property_value || transitionMarkup.to == property_value;
           })
@@ -149,19 +153,8 @@ function loadMinglePluginTransitionWorkflowFacade() {
       }.bind(this));
     },
 
-    allParticipants: function() {
-      return this.allValues().collect(function(value) {
-        return this.valueToMarkup(value);
-      }.bind(this));
-    },
-
-    valueToMarkup: function(value) {
-      return value ? value : '(not set)'
-    },
-
     createParticipant: function(property_value) {
-      var valueMarkup = this.valueToMarkup(property_value);
-      var participant = {alias: valueMarkup.gsub(/ /, '_'), name: valueMarkup};
+      var participant = {alias: property_value.gsub(/ /, '_'), name: property_value};
 
       if (participant.alias == participant.name) {
         participant.markup = 'participant ' + participant.name;
@@ -179,7 +172,7 @@ function loadMinglePluginTransitionWorkflowFacade() {
     },
 
     allValues: function(){
-      var values = $A(['(any)', '(set)', null]);
+      var values = $A(['(any)', '(set)', '(not set)']);
       return values.concat(this.property_value_details.sortBy(function(pv) { return pv.position; }).pluck('value'));
     },
 

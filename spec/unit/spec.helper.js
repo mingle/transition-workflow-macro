@@ -27,7 +27,7 @@ function statusPropertyDefintionStub() {
       var map = $H();
       map.set('New', 1);
       map.set('Closed', 2);
-      map.set(null, -1);
+      map.set('(not set)', -1);
       map.set('(set)', -2);
       map.set('(any)', -3);
       return map;

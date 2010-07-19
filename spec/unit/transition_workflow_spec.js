@@ -1,12 +1,13 @@
-describe 'TransitionWorkflow'
-  describe '.findAllTransitions()'
-    before
-      workflow = new MinglePluginTransitionWorkflowFacade;
-    end
+describe 'MinglePluginTransitionWorkflow'
+  before_each
+    workflow = new MinglePluginTransitionWorkflowFacade;
+  end
 
-    after_each
-      window.debug = false
-    end
+  after_each
+    window.debug = false
+  end
+
+  describe '.createMarkup'
 
     it 'load transitions from data file'
       var transitions = workflow.parseTransitions(getData('transitions'));
@@ -31,7 +32,7 @@ describe 'TransitionWorkflow'
       transition.will_set_card_properties[0].type_description.should_equal("Managed text list");
     
       transition.will_set_card_properties[1].name.should_equal('Owner');
-      transition.will_set_card_properties[1].value.should_equal(null);
+      transition.will_set_card_properties[1].value.should_equal('(not set)');
       transition.will_set_card_properties[1].type_description.should_equal("Automatically generated from the team list");
     end
 
@@ -78,7 +79,7 @@ describe 'TransitionWorkflow'
       var map = status.valuePositionMap();
       map.get('(any)').should_equal(0);
       map.get('(set)').should_equal(1);
-      map.get(null).should_equal(2);
+      map.get('(not set)').should_equal(2);
       map.get('New').should_equal(3);
       map.get('Ready for Testing').should_equal(9);
     end
@@ -156,7 +157,6 @@ describe 'TransitionWorkflow'
       participants.pluck("alias").should_eql(['(not_set)', 'Accepted']);
     end
 
-    
     it "participant should have markup"
       var property_definitions = workflow.parsePropertyDefinitions(getData('property_definitions'));
       var transitions = [parseTransitionMarkup("Ready for Signoff->Accepted: Accepted")];
@@ -164,10 +164,7 @@ describe 'TransitionWorkflow'
       var expected = ['participant "Ready for Signoff" as Ready_for_Signoff', 'participant Accepted'];
       participants.pluck("markup").should_eql(expected);
     end
-    
-  end
-  
-  describe 'Transition'
+
     it 'as accepted transitions workflow markup with participants'
       var orderedMarkup = workflow.orderedMarkup('Story', 'Status', getData('accepted_transition'), getData('property_definitions'));
       var expected = [
@@ -195,12 +192,29 @@ describe 'TransitionWorkflow'
       ]
       orderedMarkup.should_eql(expected);
     end
-
+  end
+  
+  describe 'Transition'
     it 'as workflowMarkup'
       var transitions = workflow.parseTransitions(getData('accepted_transition'));
       transition = transitions[0];
       var expected = parseTransitionMarkup("Ready for Signoff->Accepted: Accepted")
       transition.asWorkflowMarkup('Status').should_eql(expected);
+    end
+  end
+
+  describe 'XmlUtils.elementToObject'
+    it 'should parse property value null to (not set)'
+      var transitions = workflow.parseTransitions(getData('transitions_for_sorting_any_and_set'));
+      var property_definitions = workflow.parsePropertyDefinitions(getData('property_definitions'));
+
+      transition = transitions.detect(function(t) {
+        return t.name == 'not_set_to_new';
+      });
+
+      transition.if_card_has_properties[0].value.should_eql('(not set)');
+
+      property_definitions.findByName('Date Accepted').description.should_eql(null);
     end
   end
 end
