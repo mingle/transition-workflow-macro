@@ -9,6 +9,7 @@
 		<script>
 			function runSuites() {
 				JSpec
+				.exec('unit/integration_spec.js')
 				.exec('unit/transition_workflow_spec.js')
 				.run({ fixturePath: 'fixtures' })
 				.report()

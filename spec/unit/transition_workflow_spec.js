@@ -1,6 +1,3 @@
-
-
-
 describe 'TransitionWorkflow'
   describe '.findAllTransitions()'
     before
@@ -47,7 +44,8 @@ describe 'TransitionWorkflow'
     
     it 'generate workflow markup for card type and property definition'
       var workflow = new TransitionWorkflow;
-      workflow.markup('Story', 'Status', getData('accepted_transition'), getData('property_definitions')).should_eql(["Ready for Signoff->Accepted: Accepted"]);
+      var expected = [parseTransitionMarkup("Ready for Signoff->Accepted: Accepted")];
+      workflow.markup('Story', 'Status', getData('accepted_transition'), getData('property_definitions')).should_eql(expected);
     end
 
     it 'filter transitions by card type'
@@ -109,7 +107,9 @@ describe 'TransitionWorkflow'
         "In Testing->Ready for Development: reopen for development",
         "In Testing->Ready for Signoff: Complete Testing",
         "Ready for Signoff->Accepted: Accepted"
-      ]
+      ].collect(function(markup) {
+        return parseTransitionMarkup(markup);
+      })
 
       // var expected = ["New->Ready for Analysis: Add to Current Sprint", "New->Ready for Analysis: Add to Next Sprint"]
       var workflow = new TransitionWorkflow;
@@ -157,14 +157,47 @@ describe 'TransitionWorkflow'
       transitions.length.should_eql(12);
     end
 
+    it "should filter out participants that apply to the to or from transitions"
+      var workflow = new TransitionWorkflow;
+      var property_definitions = workflow.parsePropertyDefinitions(getData('property_definitions'));
+      var transitions = [parseTransitionMarkup("Ready for Signoff->Accepted: Accepted")];
+      var participants = property_definitions.findByName("Status").participantsFor(transitions);
+      var expected = ['Ready for Signoff', 'Accepted'];
+      participants.collect(function(p) {return p.name}).should_eql(expected);
+    end
+    
+    it "participant should have markup"
+      var workflow = new TransitionWorkflow;
+      var property_definitions = workflow.parsePropertyDefinitions(getData('property_definitions'));
+      var transitions = [parseTransitionMarkup("Ready for Signoff->Accepted: Accepted")];
+      var participants = property_definitions.findByName("Status").participantsFor(transitions);
+      var expected = ['participant "Ready for Signoff" as Ready_for_Signoff', 'participant Accepted'];
+      participants.pluck("markup").should_eql(expected);
+    end
+    
   end
-
+  
   describe 'Transition'
-    it 'as workflow markup'
+    it 'as workflow markup with participants'
+      var workflow = new TransitionWorkflow;
+      var orderedMarkup = workflow.orderedMarkup('Story', 'Status', getData('accepted_transition'), getData('property_definitions'));
+      var expected = [
+        "participant \"Ready for Signoff\" as Ready_for_Signoff",
+        "participant Accepted",
+        "Ready_for_Signoff->Accepted: Accepted",
+      ]
+      orderedMarkup.length.should_eql(expected.length);
+      expected.each(function(a, index){
+        orderedMarkup[index].should_eql(a);
+      });
+    end
+
+    it 'as workflowMarkup'
       var workflow = new TransitionWorkflow;
       var transitions = workflow.parseTransitions(getData('accepted_transition'));
       transition = transitions[0];
-      transition.asWorkflowMarkup('Status').should_equal("Ready for Signoff->Accepted: Accepted");
+      var expected = parseTransitionMarkup("Ready for Signoff->Accepted: Accepted")
+      transition.asWorkflowMarkup('Status').should_eql(expected);
     end
   end
 end
