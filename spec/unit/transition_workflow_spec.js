@@ -1,7 +1,7 @@
 describe 'TransitionWorkflow'
   describe '.findAllTransitions()'
     before
-      TransitionWorkflow = MinglePluginTransitionWorkflowFacade;
+      workflow = new MinglePluginTransitionWorkflowFacade;
     end
 
     after_each
@@ -9,13 +9,11 @@ describe 'TransitionWorkflow'
     end
 
     it 'load transitions from data file'
-      var workflow = new TransitionWorkflow;
       var transitions = workflow.parseTransitions(getData('transitions'));
       transitions.length.should_equal(16);
     end
     
     it 'find a transtion properties'
-      var workflow = new TransitionWorkflow;
       var transitions = workflow.parseTransitions(getData('accepted_transition'));
       transitions.length.should_equal(1);
     
@@ -38,51 +36,43 @@ describe 'TransitionWorkflow'
     end
 
     it 'not error out when there are no transitions for that card type'
-      var workflow = new TransitionWorkflow;
       workflow.markup('cardTypeThatDoesNotExist', 'Status', getData('accepted_transition'), getData('property_definitions')).should_be_empty();
     end
     
     it 'generate workflow markup for card type and property definition'
-      var workflow = new TransitionWorkflow;
       var expected = [parseTransitionMarkup("Ready for Signoff->Accepted: Accepted")];
       workflow.markup('Story', 'Status', getData('accepted_transition'), getData('property_definitions')).should_eql(expected);
     end
 
     it 'filter transitions by card type'
-      var workflow = new TransitionWorkflow;
       var transitions = workflow.parseTransitions(getData('transitions'));
       transitions.findByCardTypeName('Story').length.should_equal(12);
       transitions.findByCardTypeName(null).length.should_equal(0);
     end
 
     it 'filter transitions by card type should be caseinsensitive'
-      var workflow = new TransitionWorkflow;
       var transitions = workflow.parseTransitions(getData('transitions'));
       transitions.findByCardTypeName('sTory').length.should_equal(12);
     end
 
     it 'filter transitions that modify a specific property definition'
-      var workflow = new TransitionWorkflow;
       var transitions = workflow.parseTransitions(getData('transitions'));
       transitions.thatModifyPropertyDefinition('Status').length.should_equal(12);
     end
 
     it 'filter transitions by property definition & card type'
-      var workflow = new TransitionWorkflow;
       var transitions = workflow.parseTransitions(getData('transitions'));
       transitions.findByCardTypeName('Story').thatModifyPropertyDefinition('Status').length.should_equal(12);
       transitions.thatModifyPropertyDefinition('Status').findByCardTypeName('Story').length.should_equal(12);
     end
 
     it 'filter property definitions by name'
-      var workflow = new TransitionWorkflow;
       var property_definitions = workflow.parsePropertyDefinitions(getData('property_definitions'));
       property_definitions.findByName('Story').name.should_equal('Story');
       property_definitions.findByName('NotExist').should_be_null();
     end
 
     it 'property definition value position map'
-      var workflow = new TransitionWorkflow;
       var property_definitions = workflow.parsePropertyDefinitions(getData('property_definitions'));
       var status = property_definitions.findByName('Status')
       var map = status.valuePositionMap();
@@ -112,7 +102,6 @@ describe 'TransitionWorkflow'
       })
 
       // var expected = ["New->Ready for Analysis: Add to Current Sprint", "New->Ready for Analysis: Add to Next Sprint"]
-      var workflow = new TransitionWorkflow;
       var transitions = workflow.markup('Story', 'Status', getData('transitions'), getData('property_definitions'));
       transitions.length.should_eql(12);
       expected.each(function(a, index){
@@ -121,7 +110,6 @@ describe 'TransitionWorkflow'
     end
     
     it 'should sort transition by from properties'
-      var workflow = new TransitionWorkflow;
       var transitions = workflow.parseTransitions(getData('transitions_for_sorting_from_different_property_value'));
       var status = statusPropertyDefintionStub();
 
@@ -129,22 +117,18 @@ describe 'TransitionWorkflow'
     end
 
     it 'should sort transition by to properties when from same property value'
-      var workflow = new TransitionWorkflow;
       var transitions = workflow.parseTransitions(getData('transitions_for_sorting_from_same_property_value'));
       var status = statusPropertyDefintionStub();
       transitions.sortByPropertyDefinition(status).pluck('name').should_eql(['New2NotSet', 'Close']);
     end
 
     it 'should sort transition by name when from and to are same property value'
-      var workflow = new TransitionWorkflow;
       var transitions = workflow.parseTransitions(getData('transitions_for_sorting_same_from_and_to_property_value'));
       var status = statusPropertyDefintionStub();
       transitions.sortByPropertyDefinition(status).pluck('name').should_eql(['Close1', 'Close3']);
     end
 
     it 'should sort transition for property values: (any) and (set)'
-      var workflow = new TransitionWorkflow;
-      window.debug = true
       var transitions = workflow.parseTransitions(getData('transitions_for_sorting_any_and_set'));
       transitions.length.should_eql(4);
       var status = statusPropertyDefintionStub();
@@ -152,13 +136,11 @@ describe 'TransitionWorkflow'
     end
 
     it 'find transitions by card type and property definition name should not be case sensitive'
-      var workflow = new TransitionWorkflow;
       var transitions = workflow.markup('storY', 'statuS', getData('transitions'), getData('property_definitions'));
       transitions.length.should_eql(12);
     end
 
     it "should filter out participants that apply to the to or from transitions"
-      var workflow = new TransitionWorkflow;
       var property_definitions = workflow.parsePropertyDefinitions(getData('property_definitions'));
       var transitions = [parseTransitionMarkup("Ready for Signoff->Accepted: Accepted")];
       var participants = property_definitions.findByName("Status").participantsFor(transitions);
@@ -167,7 +149,6 @@ describe 'TransitionWorkflow'
     end
 
     it "should not filter out not set transitions"
-      var workflow = new TransitionWorkflow;
       var property_definitions = workflow.parsePropertyDefinitions(getData('property_definitions'));
       var transitions = [{from: '(not set)', to: "Accepted", name: "Accept"}];
       var participants = property_definitions.findByName("Status").participantsFor(transitions);
@@ -177,7 +158,6 @@ describe 'TransitionWorkflow'
 
     
     it "participant should have markup"
-      var workflow = new TransitionWorkflow;
       var property_definitions = workflow.parsePropertyDefinitions(getData('property_definitions'));
       var transitions = [parseTransitionMarkup("Ready for Signoff->Accepted: Accepted")];
       var participants = property_definitions.findByName("Status").participantsFor(transitions);
@@ -189,7 +169,6 @@ describe 'TransitionWorkflow'
   
   describe 'Transition'
     it 'as accepted transitions workflow markup with participants'
-      var workflow = new TransitionWorkflow;
       var orderedMarkup = workflow.orderedMarkup('Story', 'Status', getData('accepted_transition'), getData('property_definitions'));
       var expected = [
         "participant \"Ready for Signoff\" as Ready_for_Signoff",
@@ -203,7 +182,6 @@ describe 'TransitionWorkflow'
     end
 
     it 'as entire workflow markup with participants'
-      var workflow = new TransitionWorkflow;
       var orderedMarkup = workflow.orderedMarkup('Story', 'Status', getData('transitions_for_sorting_any_and_set'), getData('property_definitions'));
       var expected = [
         "participant (any)",
@@ -219,7 +197,6 @@ describe 'TransitionWorkflow'
     end
 
     it 'as workflowMarkup'
-      var workflow = new TransitionWorkflow;
       var transitions = workflow.parseTransitions(getData('accepted_transition'));
       transition = transitions[0];
       var expected = parseTransitionMarkup("Ready for Signoff->Accepted: Accepted")
