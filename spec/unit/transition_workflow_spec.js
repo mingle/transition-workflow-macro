@@ -86,11 +86,11 @@ describe 'TransitionWorkflow'
       var property_definitions = workflow.parsePropertyDefinitions(getData('property_definitions'));
       var status = property_definitions.findByName('Status')
       var map = status.valuePositionMap();
-      map.get('(any)').should_equal(-3);
-      map.get('(set)').should_equal(-2);
-      map.get(null).should_equal(-1);
-      map.get('New').should_equal(1);
-      map.get('Ready for Testing').should_equal(7);
+      map.get('(any)').should_equal(0);
+      map.get('(set)').should_equal(1);
+      map.get(null).should_equal(2);
+      map.get('New').should_equal(3);
+      map.get('Ready for Testing').should_equal(9);
     end
 
     it 'find the starting and ending transitions'
@@ -163,8 +163,18 @@ describe 'TransitionWorkflow'
       var transitions = [parseTransitionMarkup("Ready for Signoff->Accepted: Accepted")];
       var participants = property_definitions.findByName("Status").participantsFor(transitions);
       var expected = ['Ready for Signoff', 'Accepted'];
-      participants.collect(function(p) {return p.name}).should_eql(expected);
+      participants.pluck('name').should_eql(expected);
     end
+
+    it "should not filter out not set transitions"
+      var workflow = new TransitionWorkflow;
+      var property_definitions = workflow.parsePropertyDefinitions(getData('property_definitions'));
+      var transitions = [{from: '(not set)', to: "Accepted", name: "Accept"}];
+      var participants = property_definitions.findByName("Status").participantsFor(transitions);
+      participants.pluck('name').should_eql(['(not set)', 'Accepted']);
+      participants.pluck("alias").should_eql(['(not_set)', 'Accepted']);
+    end
+
     
     it "participant should have markup"
       var workflow = new TransitionWorkflow;
@@ -178,7 +188,7 @@ describe 'TransitionWorkflow'
   end
   
   describe 'Transition'
-    it 'as workflow markup with participants'
+    it 'as accepted transitions workflow markup with participants'
       var workflow = new TransitionWorkflow;
       var orderedMarkup = workflow.orderedMarkup('Story', 'Status', getData('accepted_transition'), getData('property_definitions'));
       var expected = [
@@ -190,6 +200,22 @@ describe 'TransitionWorkflow'
       expected.each(function(a, index){
         orderedMarkup[index].should_eql(a);
       });
+    end
+
+    it 'as entire workflow markup with participants'
+      var workflow = new TransitionWorkflow;
+      var orderedMarkup = workflow.orderedMarkup('Story', 'Status', getData('transitions_for_sorting_any_and_set'), getData('property_definitions'));
+      var expected = [
+        "participant (any)",
+        "participant (set)",
+        "participant \"(not set)\" as (not_set)",
+        "participant New",
+        "(any)->(not_set): any_to_not_set",
+        "(any)->New: any_to_new",
+        "(set)->(not_set): set_to_not_set",
+        "(not_set)->New: not_set_to_new"
+      ]
+      orderedMarkup.should_eql(expected);
     end
 
     it 'as workflowMarkup'

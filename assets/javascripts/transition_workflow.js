@@ -60,12 +60,6 @@ function loadMinglePluginTransitionWorkflowFacade() {
       return ele.childNodes.length == 1 && ele.firstChild.nodeType == 3;
     }
 
-    // comment for now, remove this later, we should not need this anymore.
-    // stringToElement: function(text){
-    //   var div = document.createElement('div');
-    //   div.innerHTML = text.gsub(/<([a-zA-Z]+)([^>]*)\/>/, "<#{1}#{2}></#{1}>");
-    //   return div.childElements()[0];
-    // }
   };
 
   var Transition = {
@@ -74,14 +68,9 @@ function loadMinglePluginTransitionWorkflowFacade() {
         return property.name == property_name;
       };
 
-      var from = this.findFromProperty(property_name).value;
-      var to = this.will_set_card_properties.detect(withSamePropertyName).value;
-      if (from == null) {
-        from = '(not set)';
-      }
-      if (to == null) {
-        to = '(not set)';
-      }
+      var from = PropertyDefinition.valueToMarkup(this.findFromProperty(property_name).value);
+      var to = PropertyDefinition.valueToMarkup(this.will_set_card_properties.detect(withSamePropertyName).value);
+
       return {from: from, to: to, name: this.name};
     },
     
@@ -109,7 +98,7 @@ function loadMinglePluginTransitionWorkflowFacade() {
     findByCardTypeName: function(cardTypeName) {
       var result = [];
       if (cardTypeName) {
-        result = this.findAll(function(t) {
+        result = this.select(function(t) {
           //todo need test
           if (!t['card_type']) {
             return true;
@@ -121,7 +110,7 @@ function loadMinglePluginTransitionWorkflowFacade() {
     },
 
     thatModifyPropertyDefinition: function(propName) {
-      return Object.extend(this.findAll(function(t) {
+      return Object.extend(this.select(function(t) {
         return t.will_set_card_properties.any(function(property) {
           return property.name == propName;
         });
@@ -137,10 +126,6 @@ function loadMinglePluginTransitionWorkflowFacade() {
       return this.collect(function(t) {
         return t.asWorkflowMarkup(propertyName);
       });
-    },
-
-    asOrderedWorkflowMarkup: function(propertyDef) {
-      
     }
   };
 
@@ -153,38 +138,56 @@ function loadMinglePluginTransitionWorkflowFacade() {
   };
 
   var PropertyDefinition = {
+    
     participantsFor: function(transitionMarkups) {
-      return this.property_value_details.collect(function(property_value){
-        return property_value.value;
-      }).select(function(property_value){
+      return this.allParticipants().select(function(property_value){
           return transitionMarkups.any(function(transitionMarkup) {
             return transitionMarkup.from == property_value || transitionMarkup.to == property_value;
           })
       }).collect(function(property_value) {
-        var participant = {alias: property_value.gsub(/ /, '_'), name: property_value};
-        if (participant['alias'] == property_value) {
-          participant['markup'] = 'participant ' + property_value;
-        } else {
-          participant['markup'] = 'participant "' + property_value + '" as ' + participant['alias'];
-        }
-        return participant;
-      });
+        return this.createParticipant(property_value);
+      }.bind(this));
     },
+
+    allParticipants: function() {
+      return this.allValues().collect(function(value) {
+        return this.valueToMarkup(value);
+      }.bind(this));
+    },
+
+    valueToMarkup: function(value) {
+      return value ? value : '(not set)'
+    },
+
+    createParticipant: function(property_value) {
+      var valueMarkup = this.valueToMarkup(property_value);
+      var participant = {alias: valueMarkup.gsub(/ /, '_'), name: valueMarkup};
+
+      if (participant.alias == participant.name) {
+        participant.markup = 'participant ' + participant.name;
+      } else {
+        participant.markup = 'participant "' + participant.name + '" as ' + participant.alias;
+      }
+      return participant;
+    },
+
     createSetProperty: function(propName) {
       return {name: propName, value: '(set)'};
     },
     createAnyProperty: function(propName) {
       return {name: propName, value: '(any)'};
     },
+
+    allValues: function(){
+      var values = $A(['(any)', '(set)', null]);
+      return values.concat(this.property_value_details.sortBy(function(pv) { return pv.position; }).pluck('value'));
+    },
+
     valuePositionMap: function(){
-      var map = $H();
-      map.set('(any)', -3);
-      map.set('(set)', -2);
-      map.set(null, -1);
-      this.property_value_details.each(function(detail){
-        map.set(detail.value, detail.position);
+      return this.allValues().inject($H(), function(memo, value, index) {
+        memo.set(value, index);
+        return memo;
       });
-      return map;
     }
   };
 
