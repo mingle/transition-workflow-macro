@@ -34,9 +34,14 @@ class MinglePluginTransitionWorkflow
   def validate
     if @card_property.blank?
       errors << "must specify card-property"
-    elsif !@project.property_definitions.collect{|pd| pd.name.downcase}.include?(@card_property.downcase)
-      errors << "card-property #{@card_property} does not exist"
+    else
+      if (property_definition = @project.property_definitions.detect { |pd| pd.name.downcase == @card_property.downcase }).nil?
+        errors << "card-property #{@card_property} does not exist"
+      elsif property_definition.type_description != Mingle::PropertyDefinition::MANAGED_TEXT_TYPE
+        errors << "card-property #{@card_property} is not a managed text list"
+      end
     end
+
     if @card_type.blank?
       errors << "must specify card-type"
     elsif !@project.card_types.collect{|ct| ct.name.downcase}.include?(@card_type.downcase)
