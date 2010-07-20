@@ -36,14 +36,16 @@ class MinglePluginTransitionWorkflow
       var card_type = #{@parameters['card-type'].inspect};
       var card_property = #{@parameters['card-property'].inspect};
 
-      var markup = facade.createMarkup(card_type, card_property, '/api/v2/projects/#{@project.identifier}');
-      var div = Builder.node('div', {className: 'wsd' , wsd_style: #{@style.inspect}});
-      var pre = Builder.node('pre', {style: 'display:none'});
-      pre.innerHTML = markup.join("\\n");
-      div.appendChild(pre);
-      var script = Builder.node('script', {type: 'text/javascript', src: 'http://www.websequencediagrams.com/service.js'});
-      div.appendChild(script);
-      $("#{container_id}").appendChild(div);
+
+      facade.createMarkupAsync(card_type, card_property, '/api/v2/projects/#{@project.identifier}', function(markup) {
+        var div = Builder.node('div', {className: 'wsd' , wsd_style: #{@style.inspect}});
+        var pre = Builder.node('pre', {style: 'display:none'});
+        pre.innerHTML = markup.join("\\n");
+        div.appendChild(pre);
+        var script = Builder.node('script', {type: 'text/javascript', src: 'http://www.websequencediagrams.com/service.js'});
+        div.appendChild(script);
+        $("#{container_id}").appendChild(div);
+      });
     } catch (e) {
       console.log(e)
     }

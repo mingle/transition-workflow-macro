@@ -220,16 +220,18 @@ function loadMinglePluginTransitionWorkflowFacade() {
   });
 
   var Facade = Class.create({
-    createMarkup: function(cardTypeName, propertyName, prefixPath) {
-      var transitions = this.syncRequest(prefixPath + '/transitions.xml');
-      var definitions = this.syncRequest(prefixPath + '/property_definitions.xml');
+    createMarkupAsync: function(cardTypeName, propertyName, prefixPath, callback) {
+      var transitions_path = prefixPath + '/transitions.xml';
+      var pd_path = prefixPath + '/property_definitions.xml';
 
-      return this.orderedMarkup(cardTypeName, propertyName, transitions, definitions);
-    },
-
-    syncRequest: function(path) {
-      var request = new Ajax.Request(path, {method: 'get', asynchronous: false});
-      return request.transport.responseXML.documentElement;
+      new Ajax.Request(transitions_path, {method: 'get', onSuccess: function(transport) {
+        var transitions = transport.responseXML.documentElement;
+        new Ajax.Request(pd_path, {method: 'get', onSuccess: function(transport) {
+          var definitions = transport.responseXML.documentElement;
+          var markup = this.orderedMarkup(cardTypeName, propertyName, transitions, definitions);
+          callback(markup);
+        }.bind(this)});
+      }.bind(this)});
     },
 
     orderedMarkup: function(cardTypeName, propertyName, transitionsXml, propertyDefinitionsXml) {
