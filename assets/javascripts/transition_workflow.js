@@ -79,12 +79,12 @@ function loadMinglePluginTransitionWorkflowFacade() {
     },
     
     findFromProperty: function(propName) {
-       return this.if_card_has_properties_including_set().detect(function(property) {
+       return this.ifCardHasPropertiesIncludingSet().detect(function(property) {
          return property.name == propName;
        }) || PropertyDefinition.createAnyProperty(this.propertyName);
     },
 
-    if_card_has_properties_including_set: function() {
+    ifCardHasPropertiesIncludingSet: function() {
       var set_properties = this.if_card_has_properties_set.collect(function(propDef) {
         return PropertyDefinition.createSetProperty(propDef.name)
       });
@@ -195,8 +195,8 @@ function loadMinglePluginTransitionWorkflowFacade() {
     },
 
     compare: function(left, right) {
-      var a = this.positionOfPropertyValue(left.if_card_has_properties_including_set());
-      var b = this.positionOfPropertyValue(right.if_card_has_properties_including_set());
+      var a = this.positionOfPropertyValue(left.ifCardHasPropertiesIncludingSet());
+      var b = this.positionOfPropertyValue(right.ifCardHasPropertiesIncludingSet());
       if (a == b) {
         a = this.positionOfPropertyValue(left.will_set_card_properties);
         b = this.positionOfPropertyValue(right.will_set_card_properties);
