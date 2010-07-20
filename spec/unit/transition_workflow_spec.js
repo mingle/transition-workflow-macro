@@ -226,6 +226,9 @@ describe 'MinglePluginTransitionWorkflow'
     it 'should raise error when card type does not exist'
       -{ workflow.createTransitionWorkflow('storyThatDoesNotExist', 'Status', getData('transitions'), getData('property_definitions')).markup() }.should.throw_error(/card type: storyThatDoesNotExist does not exist/)
     end
-
+    
+    it 'should raise error when card type does not exist'
+      -{ workflow.createTransitionWorkflow('story', 'Date Accepted', getData('transitions'), getData('property_definitions')).markup() }.should.throw_error(/Date Accepted is not a Managed text list and cannot be graphed in a workflow diagram/)
+    end
   end
 end

@@ -231,6 +231,9 @@ function loadMinglePluginTransitionWorkflowFacade() {
       if (this.propertyDefinition == null) {
         throw 'property name: ' + this.propertyName + ' does not exist.';
       }
+      if (this.propertyDefinition.property_values_description != "Managed text list") {
+        throw this.propertyName + ' is not a Managed text list and cannot be graphed in a workflow diagram';
+      }
     },
 
     markup: function() {
