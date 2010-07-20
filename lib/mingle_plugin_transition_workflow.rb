@@ -44,8 +44,12 @@ class MinglePluginTransitionWorkflow
 
     if @card_type.blank?
       errors << "must specify card-type"
-    elsif !@project.card_types.collect{|ct| ct.name.downcase}.include?(@card_type.downcase)
-      errors << "card-type #{@card_type} does not exist"
+    else
+      if (card_type = @project.card_types.detect { |ct| ct.name.downcase == @card_type.downcase}).nil?
+        errors << "card-type #{@card_type} does not exist"
+      elsif !card_type.property_definitions.any? { |pd| pd.name.downcase == @card_property.to_s.downcase }
+        errors << "card-type #{@card_type} does not have a #{@card_property} card-property"
+      end
     end
   end
 
@@ -78,7 +82,7 @@ class MinglePluginTransitionWorkflow
       $("#{container_id}").removeChild($("#{container_id}").childElements()[0]);
       $("#{container_id}").appendChild(div);
     }, function(e) {
-      $("#{container_id}").childElements()[0].innerHTML = "Error while rendering transition workflow: " + e.message
+      $("#{container_id}").childElements()[0].innerHTML = "Error while rendering transition workflow: " + e.message;
     });
   })
 //]]>

@@ -1,10 +1,16 @@
 require File.join(File.dirname(__FILE__), 'unit_test_helper')
 
 class TestMinglePluginTransitionWorkflow < Test::Unit::TestCase
-  PROJECT_STUB = OpenStruct.new(:identifier => 'project_identifier', 
-    :property_definitions => [OpenStruct.new(:type_description =>  Mingle::PropertyDefinition::MANAGED_TEXT_TYPE, :name => 'Status'),
-      OpenStruct.new(:type_description =>  ::Mingle::PropertyDefinition::MANAGED_NUMBER_TYPE, :name => 'ManagedNumbers')], 
-    :card_types => [OpenStruct.new(:name => 'Story')])
+  STATUS = OpenStruct.new(:type_description =>  Mingle::PropertyDefinition::MANAGED_TEXT_TYPE, :name => 'Status')
+  MANAGED_NUMBERS = OpenStruct.new(:type_description =>  ::Mingle::PropertyDefinition::MANAGED_NUMBER_TYPE, :name => 'ManagedNumbers')
+  SPECIAL_STATUS = OpenStruct.new(:type_description =>  ::Mingle::PropertyDefinition::MANAGED_TEXT_TYPE, :name => 'SpecialStatus')
+  STORY_PROPERTY_DEFINITIONS = [STATUS, MANAGED_NUMBERS]
+  PROJECT_PROPERTY_DEFINITIONS = [STATUS, MANAGED_NUMBERS, SPECIAL_STATUS]
+  
+  PROJECT_STUB = OpenStruct.new(
+    :identifier           => 'project_identifier', 
+    :property_definitions => PROJECT_PROPERTY_DEFINITIONS, 
+    :card_types           => [OpenStruct.new(:name => 'Story', :property_definitions => STORY_PROPERTY_DEFINITIONS)])
 
   def test_should_escape_title_parameter
     macro = MinglePluginTransitionWorkflow.new({'card-type' => 'Story', 'card-property' => 'Status', 'title' => '<h1>title</h1>'}, PROJECT_STUB)
@@ -56,6 +62,11 @@ class TestMinglePluginTransitionWorkflow < Test::Unit::TestCase
   def test_should_render_error_message_if_property_definition_is_not_a_managed_text_list
     macro = MinglePluginTransitionWorkflow.new({'card-type' => 'story', 'card-property' => "ManagedNumbers"}, PROJECT_STUB)
     assert_match /Error while rendering transition-workflow: card-property ManagedNumbers is not a managed text list/, macro.execute
+  end
+
+  def test_should_require_property_type_that_applies_to_card_type
+    macro = MinglePluginTransitionWorkflow.new({'card-type' => 'STORY', 'card-property' => "SpecialStatus"}, PROJECT_STUB)
+    assert_match /Error while rendering transition-workflow: card-type STORY does not have a SpecialStatus card-property/, macro.execute
   end
 
 end
