@@ -219,33 +219,25 @@ function loadMinglePluginTransitionWorkflowFacade() {
 
   });
 
-  var Facade = Class.create({
-    createMarkupAsync: function(cardTypeName, propertyName, prefixPath, callback) {
-      var transitions_path = prefixPath + '/transitions.xml';
-      var pd_path = prefixPath + '/property_definitions.xml';
-
-      new Ajax.Request(transitions_path, {method: 'get', onSuccess: function(transport) {
-        var transitions = transport.responseXML.documentElement;
-        new Ajax.Request(pd_path, {method: 'get', onSuccess: function(transport) {
-          var definitions = transport.responseXML.documentElement;
-          var markup = this.orderedMarkup(cardTypeName, propertyName, transitions, definitions);
-          callback(markup);
-        }.bind(this)});
-      }.bind(this)});
+  var TransitionWorkflow = Class.create({
+    initialize: function(cardTypeName, propertyName, transitions, propertyDefinitions) {
+      this.cardTypeName = cardTypeName;
+      this.propertyName = propertyName;
+      this.transitions = transitions;
+      this.propertyDefinition = propertyDefinitions.findByName(propertyName);
     },
 
-    orderedMarkup: function(cardTypeName, propertyName, transitionsXml, propertyDefinitionsXml) {
-      var transitions = this.parseTransitions(transitionsXml);
-      var propertyDefinitions = this.parsePropertyDefinitions(propertyDefinitionsXml);
-      var propertyDefinition = propertyDefinitions.findByName(propertyName);
+    validate: function() {
+      if (this.propertyDefinition == null) {
+        throw 'property name: ' + this.propertyName + ' does not exist.';
+      }
+    },
 
-      var transitionMarkups = transitions
-                .findByCardTypeName(cardTypeName)
-                .thatModifyPropertyDefinition(propertyDefinition.name)
-                .sortByPropertyDefinition(propertyDefinition)
-                .asWorkflowMarkup(propertyDefinition.name);
-                
-      var participants = propertyDefinition.participantsFor(transitionMarkups);
+    markup: function() {
+      this.validate();
+
+      var transitionMarkups = this.transitionMarkups();
+      var participants = this.propertyDefinition.participantsFor(transitionMarkups);
 
       var participantAliases = participants.inject($H({}), function(memo, participant) {
         memo.set(participant.name, participant.alias);
@@ -256,18 +248,36 @@ function loadMinglePluginTransitionWorkflowFacade() {
         return participantAliases.get(markup.from) + "->" + participantAliases.get(markup.to) + ": " + markup.name;
       }));
     },
+    transitionMarkups: function() {
+      return this.transitions
+                .findByCardTypeName(this.cardTypeName)
+                .thatModifyPropertyDefinition(this.propertyDefinition.name)
+                .sortByPropertyDefinition(this.propertyDefinition)
+                .asWorkflowMarkup(this.propertyDefinition.name);
+    }
+  })
 
-    markup: function(cardTypeName, propertyName, transitionsXml, propertyDefinitionsXml) {
-      var transitions = this.parseTransitions(transitionsXml);
-      var propertyDefinitions = this.parsePropertyDefinitions(propertyDefinitionsXml);
-      var propertyDefinition = propertyDefinitions.findByName(propertyName);
+  var Facade = Class.create({
+    createMarkupAsync: function(cardTypeName, propertyName, prefixPath, callback, errorCallback) {
+      var transitions_path = prefixPath + '/transitions.xml';
+      var pd_path = prefixPath + '/property_definitions.xml';
 
-      // # validate "property_values_description"=>"Managed text list",
-      return transitions
-                .findByCardTypeName(cardTypeName)
-                .thatModifyPropertyDefinition(propertyDefinition.name)
-                .sortByPropertyDefinition(propertyDefinition)
-                .asWorkflowMarkup(propertyDefinition.name);
+      new Ajax.Request(transitions_path, {method: 'get', onSuccess: function(transport) {
+        var transitions = transport.responseXML.documentElement;
+        new Ajax.Request(pd_path, {method: 'get', onSuccess: function(transport) {
+          var definitions = transport.responseXML.documentElement;
+          try {
+            var markup = this.createTransitionWorkflow(cardTypeName, propertyName, transitions, definitions).markup();
+            callback(markup);
+          }catch(e) {
+            errorCallback(e);
+          }
+        }.bind(this)});
+      }.bind(this)});
+    },
+
+    createTransitionWorkflow: function(cardTypeName, propertyName, transitionsXml, propertyDefinitionsXml) {
+      return new TransitionWorkflow(cardTypeName, propertyName, this.parseTransitions(transitionsXml), this.parsePropertyDefinitions(propertyDefinitionsXml));
     },
 
     parseTransitions: function(xml){

@@ -37,12 +37,12 @@ describe 'MinglePluginTransitionWorkflow'
     end
 
     it 'not error out when there are no transitions for that card type'
-      workflow.markup('cardTypeThatDoesNotExist', 'Status', getData('accepted_transition'), getData('property_definitions')).should_be_empty();
+      workflow.createTransitionWorkflow('cardTypeThatDoesNotExist', 'Status', getData('accepted_transition'), getData('property_definitions')).transitionMarkups().should_be_empty();
     end
     
     it 'generate workflow markup for card type and property definition'
       var expected = [parseTransitionMarkup("Ready for Signoff->Accepted: Accepted")];
-      workflow.markup('Story', 'Status', getData('accepted_transition'), getData('property_definitions')).should_eql(expected);
+      workflow.createTransitionWorkflow('Story', 'Status', getData('accepted_transition'), getData('property_definitions')).transitionMarkups().should_eql(expected);
     end
 
     it 'filter transitions by card type'
@@ -103,7 +103,7 @@ describe 'MinglePluginTransitionWorkflow'
       })
 
       // var expected = ["New->Ready for Analysis: Add to Current Sprint", "New->Ready for Analysis: Add to Next Sprint"]
-      var transitions = workflow.markup('Story', 'Status', getData('transitions'), getData('property_definitions'));
+      var transitions = workflow.createTransitionWorkflow('Story', 'Status', getData('transitions'), getData('property_definitions')).transitionMarkups();
       transitions.length.should_eql(12);
       expected.each(function(a, index){
         transitions[index].should_eql(a);
@@ -137,7 +137,7 @@ describe 'MinglePluginTransitionWorkflow'
     end
 
     it 'find transitions by card type and property definition name should not be case sensitive'
-      var transitions = workflow.markup('storY', 'statuS', getData('transitions'), getData('property_definitions'));
+      var transitions = workflow.createTransitionWorkflow('storY', 'statuS', getData('transitions'), getData('property_definitions')).transitionMarkups();
       transitions.length.should_eql(12);
     end
 
@@ -166,7 +166,7 @@ describe 'MinglePluginTransitionWorkflow'
     end
 
     it 'as accepted transitions workflow markup with participants'
-      var orderedMarkup = workflow.orderedMarkup('Story', 'Status', getData('accepted_transition'), getData('property_definitions'));
+      var orderedMarkup = workflow.createTransitionWorkflow('Story', 'Status', getData('accepted_transition'), getData('property_definitions')).markup();
       var expected = [
         "participant \"Ready for Signoff\" as Ready_for_Signoff",
         "participant Accepted",
@@ -179,7 +179,7 @@ describe 'MinglePluginTransitionWorkflow'
     end
 
     it 'as entire workflow markup with participants'
-      var orderedMarkup = workflow.orderedMarkup('Story', 'Status', getData('transitions_for_sorting_any_and_set'), getData('property_definitions'));
+      var orderedMarkup = workflow.createTransitionWorkflow('Story', 'Status', getData('transitions_for_sorting_any_and_set'), getData('property_definitions')).markup();
       var expected = [
         "participant (any)",
         "participant (set)",
@@ -216,5 +216,16 @@ describe 'MinglePluginTransitionWorkflow'
 
       property_definitions.findByName('Date Accepted').description.should_eql(null);
     end
+  end
+
+  describe 'Validation'
+    it 'should raise error when card property name does not exist'
+      -{ workflow.createTransitionWorkflow('Story', 'StatusNotExists', getData('transitions'), getData('property_definitions')).markup() }.should.throw_error(/property name: StatusNotExists does not exist/)
+    end
+
+    it 'should raise error when card type does not exist'
+      -{ workflow.createTransitionWorkflow('storyThatDoesNotExist', 'Status', getData('transitions'), getData('property_definitions')).markup() }.should.throw_error(/card type: storyThatDoesNotExist does not exist/)
+    end
+
   end
 end
