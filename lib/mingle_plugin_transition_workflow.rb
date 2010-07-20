@@ -1,4 +1,5 @@
 require 'erb'
+
 class MinglePluginTransitionWorkflow
   STYLES = [
     'default',
@@ -12,15 +13,41 @@ class MinglePluginTransitionWorkflow
     'napkin'
   ]
 
+  attr_accessor :errors
+
   def initialize(parameters, project, current_user=nil)
     @parameters = parameters
     @project = project
     @title = @parameters['title'].to_s.strip
     @style = @parameters['style'].to_s.strip.downcase
     @style = STYLES.include?(@style) ? @style : 'default'
+    @card_property = @parameters['card-property']
+    @card_type = @parameters['card-type']
   end
-    
+
+  def valid?
+    @errors = []
+    validate
+    return @errors.empty?
+  end
+
+  def validate
+    if @card_property.blank?
+      errors << "must specify card-property"
+    elsif !@project.property_definitions.collect{|pd| pd.name.downcase}.include?(@card_property.downcase)
+      errors << "card-property #{@card_property} does not exist"
+    end
+    if @card_type.blank?
+      errors << "must specify card-type"
+    elsif !@project.card_types.collect{|ct| ct.name.downcase}.include?(@card_type.downcase)
+      errors << "card-type #{@card_type} does not exist"
+    end
+  end
+
   def execute
+    unless valid?
+      return "Error while rendering transition-workflow: #{errors.join(", ")}"
+    end
     container_id = "mingle_plugin_transition_workflow#{rand(10000)}"
     html = <<-HTML
 <h3>#{ERB::Util.h(@title)}</h3>
@@ -33,8 +60,8 @@ class MinglePluginTransitionWorkflow
 //<![CDATA[
   document.observe("dom:loaded", function(e) {
     var facade = new MinglePluginTransitionWorkflowFacade();
-    var card_type = #{@parameters['card-type'].inspect};
-    var card_property = #{@parameters['card-property'].inspect};
+    var card_type = #{@card_type.inspect};
+    var card_property = #{@card_property.inspect};
 
     facade.createMarkupAsync(card_type, card_property, '/api/v2/projects/#{@project.identifier}', function(markup) {
       var div = Builder.node('div', {className: 'wsd' , wsd_style: #{@style.inspect}});
@@ -45,6 +72,8 @@ class MinglePluginTransitionWorkflow
       div.appendChild(script);
       $("#{container_id}").removeChild($("#{container_id}").childElements()[0]);
       $("#{container_id}").appendChild(div);
+    }, function(e) {
+      $("#{container_id}").childElements()[0].innerHTML = "Error while rendering transition workflow: " + e.message
     });
   })
 //]]>
