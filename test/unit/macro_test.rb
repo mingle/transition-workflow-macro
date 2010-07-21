@@ -1,9 +1,10 @@
 require File.join(File.dirname(__FILE__), 'unit_test_helper')
 
 class TestMinglePluginTransitionWorkflow < Test::Unit::TestCase
-  STATUS = OpenStruct.new(:type_description =>  Mingle::PropertyDefinition::MANAGED_TEXT_TYPE, :name => 'Status')
-  MANAGED_NUMBERS = OpenStruct.new(:type_description =>  ::Mingle::PropertyDefinition::MANAGED_NUMBER_TYPE, :name => 'ManagedNumbers')
-  SPECIAL_STATUS = OpenStruct.new(:type_description =>  ::Mingle::PropertyDefinition::MANAGED_TEXT_TYPE, :name => 'SpecialStatus')
+  IN_PROGRESS = OpenStruct.new(:display_value => 'In Progress')
+  STATUS = OpenStruct.new(:type_description =>  Mingle::PropertyDefinition::MANAGED_TEXT_TYPE, :name => 'Status', :values => [IN_PROGRESS])
+  MANAGED_NUMBERS = OpenStruct.new(:type_description =>  ::Mingle::PropertyDefinition::MANAGED_NUMBER_TYPE, :name => 'ManagedNumbers', :values => [])
+  SPECIAL_STATUS = OpenStruct.new(:type_description =>  ::Mingle::PropertyDefinition::MANAGED_TEXT_TYPE, :name => 'SpecialStatus', :values => [])
   STORY_PROPERTY_DEFINITIONS = [STATUS, MANAGED_NUMBERS]
   PROJECT_PROPERTY_DEFINITIONS = [STATUS, MANAGED_NUMBERS, SPECIAL_STATUS]
   
@@ -67,6 +68,11 @@ class TestMinglePluginTransitionWorkflow < Test::Unit::TestCase
   def test_should_require_property_type_that_applies_to_card_type
     macro = MinglePluginTransitionWorkflow.new({'card-type' => 'STORY', 'card-property' => "SpecialStatus"}, PROJECT_STUB)
     assert_match /Error while rendering transition-workflow: card-type STORY does not have a SpecialStatus card-property/, macro.execute
+  end
+  
+  def test_should_use_display_values_for_card_property_in_sequence_edges
+    macro = MinglePluginTransitionWorkflow.new({'card-type' => 'story', 'card-property' => "status"}, PROJECT_STUB)
+    assert_match %(["In Progress"]), macro.execute
   end
 
 end
