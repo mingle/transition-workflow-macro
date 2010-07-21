@@ -32,6 +32,7 @@ class MinglePluginTransitionWorkflow
   end
 
   def validate
+
     if @card_property.blank?
       errors << "must specify card-property"
     else
@@ -54,42 +55,46 @@ class MinglePluginTransitionWorkflow
   end
 
   def execute
-    unless valid?
-      return "Error while rendering transition-workflow: #{errors.join(", ")}"
+    begin
+      unless valid?
+        return "Error while rendering transition-workflow: #{errors.join(", ")}"
+      end
+      container_id = "mingle_plugin_transition_workflow#{rand(10000)}"
+      html = <<-HTML
+  <h3>#{ERB::Util.h(@title)}</h3>
+  <div id="#{container_id}" style="width: 100%; overflow: auto">
+    <div class="loading">Loading...&nbsp;<img src="/images/spinner.gif"/></div>
+  </div>
+
+  <script src="/plugin_assets/transition_workflow/javascripts/transition_workflow.js?1279240904" type="text/javascript"></script>
+  <script type="text/javascript">
+  //<![CDATA[
+    document.observe("dom:loaded", function(e) {
+      var facade = new MinglePluginTransitionWorkflowFacade();
+      var card_type = #{@card_type.inspect};
+      var card_property = #{@card_property.inspect};
+      var managed_text_values = []; 
+      facade.createMarkupAsync(card_type, card_property, managed_text_values, '/api/v2/projects/#{@project.identifier}', function(markup) {
+        var div = new Element('div', {className: 'wsd' , wsd_style: #{@style.inspect}});
+        var pre = new Element('pre', {style: 'display:none'});
+        pre.innerHTML = markup.join("\\n");
+        div.appendChild(pre);
+        var script = new Element('script', {type: 'text/javascript', src: 'http://www.websequencediagrams.com/service.js'});
+        div.appendChild(script);
+        $("#{container_id}").down(".loading").remove();
+        $("#{container_id}").appendChild(div);
+      }, function(e) {
+        $("#{container_id}").childElements()[0].innerHTML = "Error while rendering transition workflow: " + e.message;
+      });
+    })
+  //]]>
+
+  </script>
+  HTML
+      "<notextile>#{html}</notextile>"
+    rescue Exception => ex
+      ex.backtrace.join("\n")
     end
-    container_id = "mingle_plugin_transition_workflow#{rand(10000)}"
-    html = <<-HTML
-<h3>#{ERB::Util.h(@title)}</h3>
-<div id="#{container_id}" style="width: 100%; overflow: auto">
-  <div>Loading...&nbsp;<img src="/images/spinner.gif"/></div>
-</div>
-
-<script src="/plugin_assets/transition_workflow/javascripts/transition_workflow.js?1279240904" type="text/javascript"></script>
-<script type="text/javascript">
-//<![CDATA[
-  document.observe("dom:loaded", function(e) {
-    var facade = new MinglePluginTransitionWorkflowFacade();
-    var card_type = #{@card_type.inspect};
-    var card_property = #{@card_property.inspect};
-
-    facade.createMarkupAsync(card_type, card_property, '/api/v2/projects/#{@project.identifier}', function(markup) {
-      var div = Builder.node('div', {className: 'wsd' , wsd_style: #{@style.inspect}});
-      var pre = Builder.node('pre', {style: 'display:none'});
-      pre.innerHTML = markup.join("\\n");
-      div.appendChild(pre);
-      var script = Builder.node('script', {type: 'text/javascript', src: 'http://www.websequencediagrams.com/service.js'});
-      div.appendChild(script);
-      $("#{container_id}").removeChild($("#{container_id}").childElements()[0]);
-      $("#{container_id}").appendChild(div);
-    }, function(e) {
-      $("#{container_id}").childElements()[0].innerHTML = "Error while rendering transition workflow: " + e.message;
-    });
-  })
-//]]>
-
-</script>
-HTML
-    "<notextile>#{html}</notextile>"
   end
   
   def can_be_cached?

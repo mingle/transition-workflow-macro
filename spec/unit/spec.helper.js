@@ -19,18 +19,3 @@ function log(msg) {
     console.log(msg);
   }
 }
-
-function statusPropertyDefintionStub() {
-  return {
-    name: 'Status',
-    valuePositionMap: function() {
-      var map = $H();
-      map.set('New', 1);
-      map.set('Closed', 2);
-      map.set('(not set)', -1);
-      map.set('(set)', -2);
-      map.set('(any)', -3);
-      return map;
-    }
-  };
-}

@@ -69,7 +69,7 @@ function loadMinglePluginTransitionWorkflowFacade() {
   var Transition = {
     asWorkflowMarkup: function(property_name) {
       var withSamePropertyName = function(property) {
-        return property.name == property_name;
+        return property.name.toLowerCase() == property_name.toLowerCase();
       };
 
       var from = this.findFromProperty(property_name).value;
@@ -80,7 +80,7 @@ function loadMinglePluginTransitionWorkflowFacade() {
     
     findFromProperty: function(propName) {
        return this.ifCardHasPropertiesIncludingSet().detect(function(property) {
-         return property.name == propName;
+         return property.name.toLowerCase() == propName.toLowerCase();
        }) || PropertyDefinition.createAnyProperty(this.propertyName);
     },
 
@@ -93,7 +93,7 @@ function loadMinglePluginTransitionWorkflowFacade() {
 
     findWillSetPropertyByPropertyName: function(propertyName) {
       return this.will_set_card_properties.detect(function(property) {
-        return property.name == propertyName;
+        return property.name.toLowerCase() == propertyName.toLowerCase();
       });
     }
   };
@@ -116,13 +116,13 @@ function loadMinglePluginTransitionWorkflowFacade() {
     thatModifyPropertyDefinition: function(propName) {
       return Object.extend(this.select(function(t) {
         return t.will_set_card_properties.any(function(property) {
-          return property.name == propName;
+          return property.name.toLowerCase() == propName.toLowerCase();
         });
       }), TransitionFilters);
     },
   
-    sortByPropertyDefinition: function(propertyDefinition) {
-      var comparetor = new TransitionComparetor(propertyDefinition);
+    sortByPropertyDefinition: function(propertyName, managedValues) {
+      var comparetor = new TransitionComparetor(propertyName, managedValues);
       return this.sort(comparetor.sorter());
     },
 
@@ -133,61 +133,31 @@ function loadMinglePluginTransitionWorkflowFacade() {
     }
   };
 
-  var PropertyDefinitionFilters = {
-    findByName: function(propertyName) {
-      return this.detect( function(propDef){
-        return propDef.name.toLowerCase() == propertyName.toLowerCase();
-      });
+  var Participant = Class.create({
+    initialize: function(propertyValue){
+      this.name = propertyValue;
+      this.alias = this.name.gsub(/ /, '_');
+      if (this.alias == this.name) {
+        this.markup = 'participant ' + this.name;
+      } else {
+        this.markup = 'participant "' + this.name + '" as ' + this.alias;
+      }
     }
-  };
+  });
 
   var PropertyDefinition = {
-    
-    participantsFor: function(transitionMarkups) {
-      return this.allValues().select(function(property_value){
-          return transitionMarkups.any(function(transitionMarkup) {
-            return transitionMarkup.from == property_value || transitionMarkup.to == property_value;
-          })
-      }).collect(function(property_value) {
-        return this.createParticipant(property_value);
-      }.bind(this));
-    },
-
-    createParticipant: function(property_value) {
-      var participant = {alias: property_value.gsub(/ /, '_'), name: property_value};
-
-      if (participant.alias == participant.name) {
-        participant.markup = 'participant ' + participant.name;
-      } else {
-        participant.markup = 'participant "' + participant.name + '" as ' + participant.alias;
-      }
-      return participant;
-    },
-
     createSetProperty: function(propName) {
       return {name: propName, value: '(set)'};
     },
     createAnyProperty: function(propName) {
       return {name: propName, value: '(any)'};
-    },
-
-    allValues: function(){
-      var values = $A(['(any)', '(set)', '(not set)']);
-      return values.concat(this.property_value_details.sortBy(function(pv) { return pv.position; }).pluck('value'));
-    },
-
-    valuePositionMap: function(){
-      return this.allValues().inject($H(), function(memo, value, index) {
-        memo.set(value, index);
-        return memo;
-      });
     }
   };
 
   var TransitionComparetor = Class.create({
-    initialize: function(propertyDefinition) {
-      this.propertyName = propertyDefinition.name;
-      this.valuePositionMap = propertyDefinition.valuePositionMap();
+    initialize: function(propertyName, managedValues) {
+      this.propertyName = propertyName;
+      this.managedValues = managedValues;
     },
 
     sorter: function() {
@@ -214,75 +184,79 @@ function loadMinglePluginTransitionWorkflowFacade() {
         return property.name == this.propertyName;
       }.bind(this)) || PropertyDefinition.createAnyProperty(this.propertyName);
 
-      return this.valuePositionMap.get(property.value);
+      return this.managedValues.indexOf(property.value);
     }
 
   });
 
   var TransitionWorkflow = Class.create({
-    initialize: function(cardTypeName, propertyName, transitions, propertyDefinitions) {
+    initialize: function(cardTypeName, propertyName, managedValues, transitions) {
       this.cardTypeName = cardTypeName;
       this.propertyName = propertyName;
+      this.managedValues =  $A(['(any)', '(set)', '(not set)']).concat(managedValues);
       this.transitions = transitions;
-      this.propertyDefinition = propertyDefinitions.findByName(propertyName);
     },
-
+    
+    participants: function() {
+      var transitionMarkups = this._transitionMarkups();
+      return this.managedValues.select(function(managedValue){
+          return transitionMarkups.any(function(transitionMarkup) {
+            return transitionMarkup.from == managedValue || transitionMarkup.to == managedValue;
+          })
+      }).collect(function(property_value) {
+        return new Participant(property_value);
+      });
+    },
+    
     markup: function() {
-      var transitionMarkups = this.transitionMarkups();
-      var participants = this.propertyDefinition.participantsFor(transitionMarkups);
+      var participants = this.participants();
 
       var participantAliases = participants.inject($H({}), function(memo, participant) {
         memo.set(participant.name, participant.alias);
         return memo;
       });
 
-      return participants.pluck('markup').concat(transitionMarkups.collect(function(markup) {
+      return participants.pluck('markup').concat(this._transitionMarkups().collect(function(markup) {
         return participantAliases.get(markup.from) + "->" + participantAliases.get(markup.to) + ": " + markup.name;
       }));
     },
-    transitionMarkups: function() {
-      return this.transitions
+    
+    _transitionMarkups: function() {
+      if (this._memoizedMarkups == null) {
+        this._memoizedMarkups = this.transitions
                 .findByCardTypeName(this.cardTypeName)
-                .thatModifyPropertyDefinition(this.propertyDefinition.name)
-                .sortByPropertyDefinition(this.propertyDefinition)
-                .asWorkflowMarkup(this.propertyDefinition.name);
+                .thatModifyPropertyDefinition(this.propertyName)
+                .sortByPropertyDefinition(this.propertyName, this.managedValues)
+                .asWorkflowMarkup(this.propertyName);
+      }
+      return this._memoizedMarkups;
     }
   })
 
   var Facade = Class.create({
-    createMarkupAsync: function(cardTypeName, propertyName, prefixPath, callback, errorCallback) {
+    createMarkupAsync: function(cardTypeName, propertyName, managedValues, prefixPath, callback, errorCallback) {
       var transitions_path = prefixPath + '/transitions.xml';
       var pd_path = prefixPath + '/property_definitions.xml';
 
       new Ajax.Request(transitions_path, {method: 'get', onSuccess: function(transport) {
         var transitions = transport.responseXML.documentElement;
-        new Ajax.Request(pd_path, {method: 'get', onSuccess: function(transport) {
-          var definitions = transport.responseXML.documentElement;
-          try {
-            var markup = this.createTransitionWorkflow(cardTypeName, propertyName, transitions, definitions).markup();
-            callback(markup);
-          }catch(e) {
-            errorCallback(e);
-          }
-        }.bind(this)});
+        try {
+          var markup = this.createTransitionWorkflow(cardTypeName, propertyName, managedValues, transitions).markup();
+          callback(markup);
+        }catch(e) {
+          errorCallback(e);
+        }
       }.bind(this)});
     },
 
-    createTransitionWorkflow: function(cardTypeName, propertyName, transitionsXml, propertyDefinitionsXml) {
-      return new TransitionWorkflow(cardTypeName, propertyName, this.parseTransitions(transitionsXml), this.parsePropertyDefinitions(propertyDefinitionsXml));
+    createTransitionWorkflow: function(cardTypeName, propertyName, managedValues, transitionsXml) {
+      return new TransitionWorkflow(cardTypeName, propertyName, managedValues, this.parseTransitions(transitionsXml));
     },
 
     parseTransitions: function(xml){
       return Object.extend(XmlUtils.elementToObject(xml).collect(function(transition) {
         return Object.extend(transition, Transition);
       }), TransitionFilters);
-    },
-
-    parsePropertyDefinitions: function(xml) {
-      propertyDefinitions = XmlUtils.elementToObject(xml).collect(function(propertyDefinition) {
-        return Object.extend(propertyDefinition, PropertyDefinition);
-      });
-      return Object.extend(propertyDefinitions, PropertyDefinitionFilters);
     }
 
   })
