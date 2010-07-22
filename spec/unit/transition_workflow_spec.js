@@ -14,9 +14,9 @@ describe 'MinglePluginTransitionWorkflow'
     it "should escape javascript injected via mingle xml"
       var managedValues = managedTextValues.concat(["\u003Cscript type=\"text/javascript\"\u003E alert('hi')\u003C/script\u003E"]);
       var expected = [
-        'participant "New" as New',
-        'participant "\u003Cscript type=\"text/javascript\"\u003E alert(\'hi\')\u003C/script\u003E" as \u003Cscript_type=\"text/javascript\"\u003E_alert(\'hi\')\u003C/script\u003E',
-        'New->\u003Cscript_type=\"text/javascript\"\u003E_alert(\'hi\')\u003C/script\u003E: get hacked'
+        'participant "New" as "New"',
+        'participant "\u003Cscript type=\"text/javascript\"\u003E alert(\'hi\')\u003C/script\u003E" as "\u003Cscript_type=\"text/javascript\"\u003E_alert(\'hi\')\u003C/script\u003E"',
+        '"New"->"\u003Cscript_type=\"text/javascript\"\u003E_alert(\'hi\')\u003C/script\u003E": get hacked'
       ];
       workflow.createMarkupAsync('Story', 'Status', managedValues, './data/xss_transition.xml', function(markup){
         markup.should_eql(expected);
@@ -79,23 +79,21 @@ describe 'MinglePluginTransitionWorkflow'
 
     it 'find the starting and ending transitions'
       var expected = [
-        "New->Ready for Analysis: Add to Current Sprint",
-        "New->Ready for Analysis: Add to Next Sprint",
-        "Ready for Analysis->In Analysis: Start Analysis",
-        "In Analysis->Ready for Development: Complete Analysis",
-        "In Analysis->Accepted: Just Accepted",
-        "Ready for Development->In Development: Start Development",
-        "In Development->In BA Review: Complete Development",
-        "In BA Review->Ready for Testing: Finish BA Review",
-        "Ready for Testing->In Testing: Start Testing",
-        "In Testing->Ready for Development: reopen for development",
-        "In Testing->Ready for Signoff: Complete Testing",
-        "Ready for Signoff->Accepted: Accepted"
-      ].collect(function(markup) {
-        return parseTransitionMarkup(markup);
-      });
+        '"New"->"Ready_for_Analysis": Add to Current Sprint',
+        '"New"->"Ready_for_Analysis": Add to Next Sprint',
+        '"Ready_for_Analysis"->"In_Analysis": Start Analysis',
+        '"In_Analysis"->"Ready_for_Development": Complete Analysis',
+        '"In_Analysis"->"Accepted": Just Accepted',
+        '"Ready_for_Development"->"In_Development": Start Development',
+        '"In_Development"->"In_BA_Review": Complete Development',
+        '"In_BA_Review"->"Ready_for_Testing": Finish BA Review',
+        '"Ready_for_Testing"->"In_Testing": Start Testing',
+        '"In_Testing"->"Ready_for_Development": reopen for development',
+        '"In_Testing"->"Ready_for_Signoff": Complete Testing',
+        '"Ready_for_Signoff"->"Accepted": Accepted'
+      ];
 
-      var transitions = workflow.createTransitionWorkflow('Story', 'Status', managedTextValues, getData('transitions'))._transitionMarkups();
+      var transitions = workflow.createTransitionWorkflow('Story', 'Status', managedTextValues, getData('transitions')).edges();
       transitions.length.should_eql(12);
       expected.each(function(a, index){
         transitions[index].should_eql(a);
@@ -146,16 +144,16 @@ describe 'MinglePluginTransitionWorkflow'
 
     it "participant should have markup"
       var participants = workflow.createTransitionWorkflow('story', 'status', managedTextValues, getData("accepted_transition")).participants();
-      var expected = ['participant "Ready for Signoff" as Ready_for_Signoff', 'participant \"Accepted\" as Accepted'];
+      var expected = ['participant "Ready for Signoff" as "Ready_for_Signoff"', 'participant "Accepted" as "Accepted"'];
       participants.pluck("markup").should_eql(expected);
     end
 
     it 'as accepted transitions workflow markup with participants'
       var orderedMarkup = workflow.createTransitionWorkflow('Story', 'Status', managedTextValues, getData('accepted_transition')).markup();
       var expected = [
-        "participant \"Ready for Signoff\" as Ready_for_Signoff",
-        "participant \"Accepted\" as Accepted",
-        "Ready_for_Signoff->Accepted: Accepted",
+        "participant \"Ready for Signoff\" as \"Ready_for_Signoff\"",
+        "participant \"Accepted\" as \"Accepted\"",
+        "\"Ready_for_Signoff\"->\"Accepted\": Accepted",
       ]
       orderedMarkup.length.should_eql(expected.length);
       expected.each(function(a, index){
@@ -166,14 +164,14 @@ describe 'MinglePluginTransitionWorkflow'
     it 'as entire workflow markup with participants'
       var orderedMarkup = workflow.createTransitionWorkflow('Story', 'Status', managedTextValues, getData('transitions_for_sorting_any_and_set')).markup();
       var expected = [
-        "participant \"(any)\" as (any)",
-        "participant \"(set)\" as (set)",
-        "participant \"(not set)\" as (not_set)",
-        "participant \"New\" as New",
-        "(any)->(not_set): any_to_not_set",
-        "(any)->New: any_to_new",
-        "(set)->(not_set): set_to_not_set",
-        "(not_set)->New: not_set_to_new"
+        "participant \"(any)\" as \"(any)\"",
+        "participant \"(set)\" as \"(set)\"",
+        "participant \"(not set)\" as \"(not_set)\"",
+        "participant \"New\" as \"New\"",
+        "\"(any)\"->\"(not_set)\": any_to_not_set",
+        "\"(any)\"->\"New\": any_to_new",
+        "\"(set)\"->\"(not_set)\": set_to_not_set",
+        "\"(not_set)\"->\"New\": not_set_to_new"
       ];
       orderedMarkup.should_eql(expected);
     end
@@ -181,14 +179,14 @@ describe 'MinglePluginTransitionWorkflow'
     it 'should order more complex transitions correctly regardless of card type and card property casing'
       var orderedMarkup = workflow.createTransitionWorkflow('stORy', 'sTatUs', managedTextValues, getData('transitions_for_sorting_any_and_set')).markup();
       var expected = [
-        "participant \"(any)\" as (any)",
-        "participant \"(set)\" as (set)",
-        "participant \"(not set)\" as (not_set)",
-        "participant \"New\" as New",
-        "(any)->(not_set): any_to_not_set",
-        "(any)->New: any_to_new",
-        "(set)->(not_set): set_to_not_set",
-        "(not_set)->New: not_set_to_new"
+        "participant \"(any)\" as \"(any)\"",
+        "participant \"(set)\" as \"(set)\"",
+        "participant \"(not set)\" as \"(not_set)\"",
+        "participant \"New\" as \"New\"",
+        "\"(any)\"->\"(not_set)\": any_to_not_set",
+        "\"(any)\"->\"New\": any_to_new",
+        "\"(set)\"->\"(not_set)\": set_to_not_set",
+        "\"(not_set)\"->\"New\": not_set_to_new"
       ];
       orderedMarkup.should_eql(expected);
     end

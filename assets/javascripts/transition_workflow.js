@@ -137,7 +137,7 @@ function loadMinglePluginTransitionWorkflowFacade() {
     initialize: function(propertyValue){
       this.name = propertyValue;
       this.alias = this.name.gsub(/ /, '_');
-      this.markup = 'participant "' + this.name + '" as ' + this.alias;
+      this.markup = 'participant "' + this.name + '" as "' + this.alias + '"';
     }
   });
 
@@ -203,15 +203,20 @@ function loadMinglePluginTransitionWorkflowFacade() {
     },
     
     markup: function() {
+      return this.participants().pluck('markup').concat(this.edges());
+    },
+    
+    edges: function(){
       var participants = this.participants();
 
       var participantAliases = participants.inject($H({}), function(memo, participant) {
         memo.set(participant.name, participant.alias);
         return memo;
       });
-      return participants.pluck('markup').concat(this._transitionMarkups().collect(function(markup) {
-        return participantAliases.get(markup.from) + "->" + participantAliases.get(markup.to) + ": " + markup.name;
-      }));
+      
+      return this._transitionMarkups().collect(function(markup) {
+        return '"' + participantAliases.get(markup.from) + '"->"' + participantAliases.get(markup.to) + '": ' + markup.name;
+      });
     },
     
     _transitionMarkups: function() {
