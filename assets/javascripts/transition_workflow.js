@@ -189,17 +189,19 @@ function loadMinglePluginTransitionWorkflowFacade() {
           return transitionMarkups.any(function(transitionMarkup) {
             return transitionMarkup.from == managedValue || transitionMarkup.to == managedValue;
           });
+      }).collect(function(participant) { 
+        return 'participant "#{name}" as "#{name}"'.interpolate({ name : participant }); 
       });
-    },
-    
-    markup: function() {
-      return this.participants().collect(function(participant) { return 'participant "#{name}" as "#{name}"'.interpolate({ name : participant }); }).concat(this.edges());
     },
     
     edges: function(){
       return this._transitionMarkups().collect(function(markup) {
         return '"#{from}"->"#{to}": #{name}'.interpolate(markup);
       });
+    },
+
+    markup: function() {
+      return this.participants().concat(this.edges());
     },
     
     _transitionMarkups: function() {

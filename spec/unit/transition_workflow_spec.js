@@ -132,13 +132,13 @@ describe 'MinglePluginTransitionWorkflow'
 
     it "should filter out participants that apply to the to or from transitions"
       var participants = workflow.createTransitionWorkflow('story', 'statuS', managedTextValues, getData("accepted_transition")).participants();
-      var expected = ['Ready for Signoff', 'Accepted'];
+      var expected = ['participant "Ready for Signoff" as "Ready for Signoff"', 'participant "Accepted" as "Accepted"'];
       participants.should_eql(expected);
     end
 
     it "should not filter out not set transitions"
       var participants = workflow.createTransitionWorkflow('story', 'status', managedTextValues, getData("not_set_to_accepted_transition")).participants();
-      participants.should_eql(['(not set)', 'Accepted']);
+      participants.should_eql(['participant "(not set)" as "(not set)"', 'participant "Accepted" as "Accepted"']);
     end
 
     it 'as accepted transitions workflow markup with participants'
