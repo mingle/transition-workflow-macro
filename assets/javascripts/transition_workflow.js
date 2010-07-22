@@ -175,15 +175,13 @@ function loadMinglePluginTransitionWorkflowFacade() {
           b = right.name;
         }
       }
-
-      return a < b ? -1 : a > b ? 1 : 0;
+      return a < b ? -1 : (a > b ? 1 : 0);
     },
 
     positionOfPropertyValue: function(properties) {
       var property = properties.detect(function(property) {
-        return property.name == this.propertyName;
+        return property.name.toLowerCase() == this.propertyName.toLowerCase();
       }.bind(this)) || PropertyDefinition.createAnyProperty(this.propertyName);
-
       return this.managedValues.indexOf(property.value);
     }
 
@@ -215,7 +213,6 @@ function loadMinglePluginTransitionWorkflowFacade() {
         memo.set(participant.name, participant.alias);
         return memo;
       });
-
       return participants.pluck('markup').concat(this._transitionMarkups().collect(function(markup) {
         return participantAliases.get(markup.from) + "->" + participantAliases.get(markup.to) + ": " + markup.name;
       }));
@@ -234,11 +231,9 @@ function loadMinglePluginTransitionWorkflowFacade() {
   })
 
   var Facade = Class.create({
-    createMarkupAsync: function(cardTypeName, propertyName, managedValues, prefixPath, callback, errorCallback) {
-      var transitions_path = prefixPath + '/transitions.xml';
-      var pd_path = prefixPath + '/property_definitions.xml';
+    createMarkupAsync: function(cardTypeName, propertyName, managedValues, transitionsPath, callback, errorCallback) {
 
-      new Ajax.Request(transitions_path, {method: 'get', onSuccess: function(transport) {
+      new Ajax.Request(transitionsPath, {method: 'get', onSuccess: function(transport) {
         var transitions = transport.responseXML.documentElement;
         try {
           var markup = this.createTransitionWorkflow(cardTypeName, propertyName, managedValues, transitions).markup();

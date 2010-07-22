@@ -162,7 +162,22 @@ describe 'MinglePluginTransitionWorkflow'
         "(any)->New: any_to_new",
         "(set)->(not_set): set_to_not_set",
         "(not_set)->New: not_set_to_new"
-      ]
+      ];
+      orderedMarkup.should_eql(expected);
+    end
+
+    it 'should order more complex transitions correctly regardless of card type and card property casing'
+      var orderedMarkup = workflow.createTransitionWorkflow('stORy', 'sTatUs', managedTextValues, getData('transitions_for_sorting_any_and_set')).markup();
+      var expected = [
+        "participant (any)",
+        "participant (set)",
+        "participant \"(not set)\" as (not_set)",
+        "participant New",
+        "(any)->(not_set): any_to_not_set",
+        "(any)->New: any_to_new",
+        "(set)->(not_set): set_to_not_set",
+        "(not_set)->New: not_set_to_new"
+      ];
       orderedMarkup.should_eql(expected);
     end
   end
