@@ -57,6 +57,11 @@ class TestMinglePluginTransitionWorkflow < Test::Unit::TestCase
     macro = MinglePluginTransitionWorkflow.new({'card-type' => 'Story', 'card-property' => "status"}, PROJECT_STUB)
     assert_match /Loading/, macro.execute
   end
+  
+  def test_should_not_render_h3_tags_if_no_title_specified
+    macro = MinglePluginTransitionWorkflow.new({'card-type' => 'Story', 'card-property' => "status"}, PROJECT_STUB)
+    assert_no_match Regexp.new("<h3>"), macro.execute
+  end
 
   def test_card_type_should_be_case_insensitive
     macro = MinglePluginTransitionWorkflow.new({'card-type' => 'story', 'card-property' => "status"}, PROJECT_STUB)

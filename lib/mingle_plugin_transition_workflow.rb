@@ -71,7 +71,7 @@ class MinglePluginTransitionWorkflow
     managed_text_values = property_definition_from_card_type.values.map(&:display_value)
     container_id = "mingle_plugin_transition_workflow#{rand(10000)}"
     html = <<-HTML
-      <h3>#{ERB::Util.h(@title)}</h3>
+      #{header_tag if @title.present?}
       <div id="#{container_id}" style="width: 100%; overflow: auto">
         <div class="loading">Loading...&nbsp;<img src="/images/spinner.gif"/></div>
       </div>
@@ -111,6 +111,10 @@ class MinglePluginTransitionWorkflow
   protected
   def bold(value)
     "<b>#{ERB::Util.h(value)}</b>"
+  end
+  
+  def header_tag
+    "<h3>" + ERB::Util.h(@title) + "</h3>"
   end
 end
 
