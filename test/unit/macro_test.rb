@@ -18,6 +18,17 @@ class TestMinglePluginTransitionWorkflow < Test::Unit::TestCase
     assert_match /&lt;h1&gt;title&lt;\/h1&gt;/, macro.execute
   end
 
+  def test_should_escape_managed_text_values
+    hacked_display_value = OpenStruct.new(:display_value => '<script>alert(\'hacked\');</script>')
+    hacked_status = OpenStruct.new(:type_description =>  Mingle::PropertyDefinition::MANAGED_TEXT_TYPE, :name => 'Status', :values => [hacked_display_value])
+    hacked_project = OpenStruct.new(
+    :identifier           => 'project_identifier', 
+    :property_definitions => [hacked_status], 
+    :card_types           => [OpenStruct.new(:name => 'Story', :property_definitions => [hacked_status])])
+    macro = MinglePluginTransitionWorkflow.new({'card-type' => 'Story', 'card-property' => 'Status', 'title' => '<h1>title</h1>'}, hacked_project)
+    assert_match "&lt;script&gt;alert('hacked');&lt;\/script&gt;", macro.execute
+  end
+
   def test_should_escape_injected_markup_to_avoid_xss
     macro = MinglePluginTransitionWorkflow.new({'card-type' => '<script type="text/javascript">alert("hacked!");</script>', 'card-property' => "Status"}, PROJECT_STUB)
     assert_match "<b>&lt;script type=&quot;text/javascript&quot;&gt;alert(&quot;hacked!&quot;);&lt;/script&gt;</b>", macro.execute

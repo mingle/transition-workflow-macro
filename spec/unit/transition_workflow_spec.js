@@ -11,6 +11,18 @@ describe 'MinglePluginTransitionWorkflow'
 
   describe '.createMarkup'
 
+    it "should escape javascript injected via mingle xml"
+      var managedValues = managedTextValues.concat(["\u003Cscript type=\"text/javascript\"\u003E alert('hi')\u003C/script\u003E"]);
+      var expected = [
+        'participant "New" as New',
+        'participant "\u003Cscript type=\"text/javascript\"\u003E alert(\'hi\')\u003C/script\u003E" as \u003Cscript_type=\"text/javascript\"\u003E_alert(\'hi\')\u003C/script\u003E',
+        'New->\u003Cscript_type=\"text/javascript\"\u003E_alert(\'hi\')\u003C/script\u003E: get hacked'
+      ];
+      workflow.createMarkupAsync('Story', 'Status', managedValues, './data/xss_transition.xml', function(markup){
+        markup.should_eql(expected);
+      });
+    end
+
     it 'load transitions from data file'
       var transitions = workflow.parseTransitions(getData('transitions'));
       transitions.length.should_equal(16);
@@ -134,7 +146,7 @@ describe 'MinglePluginTransitionWorkflow'
 
     it "participant should have markup"
       var participants = workflow.createTransitionWorkflow('story', 'status', managedTextValues, getData("accepted_transition")).participants();
-      var expected = ['participant "Ready for Signoff" as Ready_for_Signoff', 'participant Accepted'];
+      var expected = ['participant "Ready for Signoff" as Ready_for_Signoff', 'participant \"Accepted\" as Accepted'];
       participants.pluck("markup").should_eql(expected);
     end
 
@@ -142,7 +154,7 @@ describe 'MinglePluginTransitionWorkflow'
       var orderedMarkup = workflow.createTransitionWorkflow('Story', 'Status', managedTextValues, getData('accepted_transition')).markup();
       var expected = [
         "participant \"Ready for Signoff\" as Ready_for_Signoff",
-        "participant Accepted",
+        "participant \"Accepted\" as Accepted",
         "Ready_for_Signoff->Accepted: Accepted",
       ]
       orderedMarkup.length.should_eql(expected.length);
@@ -154,10 +166,10 @@ describe 'MinglePluginTransitionWorkflow'
     it 'as entire workflow markup with participants'
       var orderedMarkup = workflow.createTransitionWorkflow('Story', 'Status', managedTextValues, getData('transitions_for_sorting_any_and_set')).markup();
       var expected = [
-        "participant (any)",
-        "participant (set)",
+        "participant \"(any)\" as (any)",
+        "participant \"(set)\" as (set)",
         "participant \"(not set)\" as (not_set)",
-        "participant New",
+        "participant \"New\" as New",
         "(any)->(not_set): any_to_not_set",
         "(any)->New: any_to_new",
         "(set)->(not_set): set_to_not_set",
@@ -169,10 +181,10 @@ describe 'MinglePluginTransitionWorkflow'
     it 'should order more complex transitions correctly regardless of card type and card property casing'
       var orderedMarkup = workflow.createTransitionWorkflow('stORy', 'sTatUs', managedTextValues, getData('transitions_for_sorting_any_and_set')).markup();
       var expected = [
-        "participant (any)",
-        "participant (set)",
+        "participant \"(any)\" as (any)",
+        "participant \"(set)\" as (set)",
         "participant \"(not set)\" as (not_set)",
-        "participant New",
+        "participant \"New\" as New",
         "(any)->(not_set): any_to_not_set",
         "(any)->New: any_to_new",
         "(set)->(not_set): set_to_not_set",

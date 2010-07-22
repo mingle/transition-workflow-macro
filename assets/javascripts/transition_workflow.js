@@ -137,11 +137,7 @@ function loadMinglePluginTransitionWorkflowFacade() {
     initialize: function(propertyValue){
       this.name = propertyValue;
       this.alias = this.name.gsub(/ /, '_');
-      if (this.alias == this.name) {
-        this.markup = 'participant ' + this.name;
-      } else {
-        this.markup = 'participant "' + this.name + '" as ' + this.alias;
-      }
+      this.markup = 'participant "' + this.name + '" as ' + this.alias;
     }
   });
 
@@ -200,7 +196,7 @@ function loadMinglePluginTransitionWorkflowFacade() {
       return this.managedValues.select(function(managedValue){
           return transitionMarkups.any(function(transitionMarkup) {
             return transitionMarkup.from == managedValue || transitionMarkup.to == managedValue;
-          })
+          });
       }).collect(function(property_value) {
         return new Participant(property_value);
       });

@@ -83,14 +83,14 @@ class MinglePluginTransitionWorkflow
           var facade = new MinglePluginTransitionWorkflowFacade();
           var card_type = #{@card_type.to_json};
           var card_property = #{@card_property.to_json};
-          var managed_text_values = #{managed_text_values.to_json}; 
+          var managed_text_values = [#{managed_text_values.map{|mv| ERB::Util.h(mv).inspect }.join(",")}]; 
           facade.createMarkupAsync(card_type, card_property, managed_text_values, '/api/v2/projects/#{@project.identifier}/transitions.xml', function(markup) {
             var div = new Element('div', {className: 'wsd' , wsd_style: #{@style.to_json}});
             var pre = new Element('pre', {style: 'display:none;'});
             pre.innerHTML = markup.join("\\n");
             div.appendChild(pre);
-            var script = new Element('script', {type: 'text/javascript', src: 'http://www.websequencediagrams.com/service.js'});
-            div.appendChild(script);
+            // var script = new Element('script', {type: 'text/javascript', src: 'http://www.websequencediagrams.com/service.js'});
+            // div.appendChild(script);
             $("#{container_id}").down(".loading").remove();
             $("#{container_id}").appendChild(div);
           }, function(e) {
