@@ -133,14 +133,6 @@ function loadMinglePluginTransitionWorkflowFacade() {
     }
   };
 
-  var Participant = Class.create({
-    initialize: function(propertyValue){
-      this.name = propertyValue;
-      this.alias = this.name;
-      this.markup = 'participant "' + this.name + '" as "' + this.alias + '"';
-    }
-  });
-
   var PropertyDefinition = {
     createSetProperty: function(propName) {
       return {name: propName, value: '(set)'};
@@ -197,25 +189,16 @@ function loadMinglePluginTransitionWorkflowFacade() {
           return transitionMarkups.any(function(transitionMarkup) {
             return transitionMarkup.from == managedValue || transitionMarkup.to == managedValue;
           });
-      }).collect(function(property_value) {
-        return new Participant(property_value);
       });
     },
     
     markup: function() {
-      return this.participants().pluck('markup').concat(this.edges());
+      return this.participants().collect(function(participant) { return 'participant "#{name}" as "#{name}"'.interpolate({ name : participant }); }).concat(this.edges());
     },
     
     edges: function(){
-      var participants = this.participants();
-
-      var participantAliases = participants.inject($H({}), function(memo, participant) {
-        memo.set(participant.name, participant.alias);
-        return memo;
-      });
-      
       return this._transitionMarkups().collect(function(markup) {
-        return '"' + participantAliases.get(markup.from) + '"->"' + participantAliases.get(markup.to) + '": ' + markup.name;
+        return '"#{from}"->"#{to}": #{name}'.interpolate(markup);
       });
     },
     
