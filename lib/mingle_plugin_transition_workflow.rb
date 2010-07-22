@@ -89,8 +89,8 @@ class MinglePluginTransitionWorkflow
             var pre = new Element('pre', {style: 'display:none;'});
             pre.innerHTML = markup.join("\\n");
             div.appendChild(pre);
-            // var script = new Element('script', {type: 'text/javascript', src: 'http://www.websequencediagrams.com/service.js'});
-            // div.appendChild(script);
+            var script = new Element('script', {type: 'text/javascript', src: 'http://www.websequencediagrams.com/service.js'});
+            div.appendChild(script);
             $("#{container_id}").down(".loading").remove();
             $("#{container_id}").appendChild(div);
           }, function(e) {

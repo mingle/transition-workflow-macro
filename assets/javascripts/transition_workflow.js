@@ -136,7 +136,7 @@ function loadMinglePluginTransitionWorkflowFacade() {
   var Participant = Class.create({
     initialize: function(propertyValue){
       this.name = propertyValue;
-      this.alias = this.name.gsub(/ /, '_');
+      this.alias = this.name;
       this.markup = 'participant "' + this.name + '" as "' + this.alias + '"';
     }
   });
