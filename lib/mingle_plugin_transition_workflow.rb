@@ -41,16 +41,15 @@ class MinglePluginTransitionWorkflow
     card_type_from_project.property_definitions.detect { |pd| pd.name.downcase == @card_property.to_s.downcase }
   end
  
-
   def validate
 
     if @card_property.blank?
       errors << "must specify card-property"
     else
       if (property_definition = property_definition_from_project).nil?
-        errors << "card-property #{@card_property} does not exist"
+        errors << "card-property #{bold(@card_property)} does not exist"
       elsif property_definition.type_description != Mingle::PropertyDefinition::MANAGED_TEXT_TYPE
-        errors << "card-property #{@card_property} is not a managed text list"
+        errors << "card-property #{bold(@card_property)} is not a managed text list"
       end
     end
 
@@ -58,9 +57,9 @@ class MinglePluginTransitionWorkflow
       errors << "must specify card-type"
     else
       if (card_type = card_type_from_project).nil?
-        errors << "card-type #{@card_type} does not exist"
+        errors << "card-type #{bold(@card_type)} does not exist"
       elsif property_definition_from_card_type.nil?
-        errors << "card-type #{@card_type} does not have a #{@card_property} card-property"
+        errors << "card-type #{bold(@card_type)} does not have a #{bold(@card_property)} card-property"
       end
     end
   end
@@ -82,11 +81,11 @@ class MinglePluginTransitionWorkflow
       //<![CDATA[
         document.observe("dom:loaded", function(e) {
           var facade = new MinglePluginTransitionWorkflowFacade();
-          var card_type = #{@card_type.inspect};
-          var card_property = #{@card_property.inspect};
+          var card_type = #{@card_type.to_json};
+          var card_property = #{@card_property.to_json};
           var managed_text_values = #{managed_text_values.to_json}; 
           facade.createMarkupAsync(card_type, card_property, managed_text_values, '/api/v2/projects/#{@project.identifier}/transitions.xml', function(markup) {
-            var div = new Element('div', {className: 'wsd' , wsd_style: #{@style.inspect}});
+            var div = new Element('div', {className: 'wsd' , wsd_style: #{@style.to_json}});
             var pre = new Element('pre', {style: 'display:none;'});
             pre.innerHTML = markup.join("\\n");
             div.appendChild(pre);
@@ -108,6 +107,10 @@ class MinglePluginTransitionWorkflow
   def can_be_cached?
     false  # if appropriate, switch to true once you move your macro to production
   end
-    
+
+  protected
+  def bold(value)
+    "<b>#{ERB::Util.h(value)}</b>"
+  end
 end
 

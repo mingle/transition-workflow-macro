@@ -17,14 +17,22 @@ class TestMinglePluginTransitionWorkflow < Test::Unit::TestCase
     macro = MinglePluginTransitionWorkflow.new({'card-type' => 'Story', 'card-property' => 'Status', 'title' => '<h1>title</h1>'}, PROJECT_STUB)
     assert_match /&lt;h1&gt;title&lt;\/h1&gt;/, macro.execute
   end
+
+  def test_should_escape_injected_markup_to_avoid_xss
+    macro = MinglePluginTransitionWorkflow.new({'card-type' => '<script type="text/javascript">alert("hacked!");</script>', 'card-property' => "Status"}, PROJECT_STUB)
+    assert_match "<b>&lt;script type=&quot;text/javascript&quot;&gt;alert(&quot;hacked!&quot;);&lt;/script&gt;</b>", macro.execute
+  end
+
   def test_should_escape_style_parameter
     macro = MinglePluginTransitionWorkflow.new({'card-type' => 'Story', 'card-property' => 'Status', 'style' => '<h1>title</h1>'}, PROJECT_STUB)
     assert_match /wsd_style: "default"/, macro.execute
   end
+
   def test_style_parameter
     macro = MinglePluginTransitionWorkflow.new({'card-type' => 'Story', 'card-property' => 'Status', 'style' => 'rose'}, PROJECT_STUB)
     assert_match /wsd_style: "rose"/, macro.execute
   end
+
   def test_should_render_error_message_for_card_property_is_not_given
     macro = MinglePluginTransitionWorkflow.new({'card-type' => 'Story', 'card-property' => nil}, PROJECT_STUB)
     assert_match /Error while rendering transition-workflow: must specify card-property/, macro.execute
@@ -37,12 +45,12 @@ class TestMinglePluginTransitionWorkflow < Test::Unit::TestCase
 
   def test_should_render_error_message_for_card_property_does_not_exist
     macro = MinglePluginTransitionWorkflow.new({'card-type' => 'Story', 'card-property' => "doesNotExist"}, PROJECT_STUB)
-    assert_match /Error while rendering transition-workflow: card-property doesNotExist does not exist/, macro.execute
+    assert_match /Error while rendering transition-workflow: card-property <b>doesNotExist<\/b> does not exist/, macro.execute
   end
 
   def test_should_render_error_message_for_card_type_does_not_exist
     macro = MinglePluginTransitionWorkflow.new({'card-type' => 'DoesNotExist', 'card-property' => "Status"}, PROJECT_STUB)
-    assert_match /card-type DoesNotExist does not exist/, macro.execute
+    assert_match /card-type <b>DoesNotExist<\/b> does not exist/, macro.execute
   end
 
   def test_card_property_should_be_case_insensitive
@@ -62,12 +70,12 @@ class TestMinglePluginTransitionWorkflow < Test::Unit::TestCase
 
   def test_should_render_error_message_if_property_definition_is_not_a_managed_text_list
     macro = MinglePluginTransitionWorkflow.new({'card-type' => 'story', 'card-property' => "ManagedNumbers"}, PROJECT_STUB)
-    assert_match /Error while rendering transition-workflow: card-property ManagedNumbers is not a managed text list/, macro.execute
+    assert_match /Error while rendering transition-workflow: card-property <b>ManagedNumbers<\/b> is not a managed text list/, macro.execute
   end
 
   def test_should_require_property_type_that_applies_to_card_type
     macro = MinglePluginTransitionWorkflow.new({'card-type' => 'STORY', 'card-property' => "SpecialStatus"}, PROJECT_STUB)
-    assert_match /Error while rendering transition-workflow: card-type STORY does not have a SpecialStatus card-property/, macro.execute
+    assert_match /Error while rendering transition-workflow: card-type <b>STORY<\/b> does not have a <b>SpecialStatus<\/b> card-property/, macro.execute
   end
   
   def test_should_use_display_values_for_card_property_in_sequence_edges
