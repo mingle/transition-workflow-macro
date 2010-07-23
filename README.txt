@@ -1,15 +1,49 @@
 
 # Mingle Transition Workflow Macro
 
-The quick how to, 
+This tool provides support for adding web sequence diagrams (http://www.websequencediagram.com) to your Mingle project.
 
-Description
+== GETTING STARTED:
 
-## License 
+This Mingle custom macro requires Mingle 3.2 or greater.
+
+Whenever installing a Mingle Macro you should be aware of the following:
+
+####################################################### CAUTION ###########################################################
+#                                                                                                                         #
+# BEFORE YOU DEPLOY ANYTHING TO YOUR MINGLE INSTANCE, PLEASE MAKE SURE THAT IT IS COMPLETELY SAFE. THIS IS ESPECIALLY     # 
+# IMPORTANT IF THE MACRO WAS DEVELOPED BY A THIRD PARTY.                                                                  #
+# HERE IS A LIST OF THINGS THAT YOU SHOULD LOOK OUT FOR. THIS LIST SHOULD NOT BE CONSIDERED COMPLETE, IT IS JUST A        #
+# REPRESENTATIVE SAMPLE.                                                                                                  # 
+#     *    IF MINGLE RUNS AS A PRIVILEGED USER, THE MACRO COULD END UP DAMAGING THE HOST MACHINE                          #
+#     *    THROUGH DIRECT SQL CALLS, RATHER THAN USING SUPPLIED MQL EXECUTION MECHANISM, THE MACRO COULD GAIN ACCESS TO   #
+#          DATA THAT PEOPLE WOULD NORMALLY NOT BE AUTHORIZED TO SEE                                                       #
+#     *    LENGTHY CALLS TO EXTERNAL SYSTEMS COULD TIE UP MINGLE RESOURCES AND LEAVE THE APP UNRESPONSIVE                 #
+#     *    SYSTEM CALLS, IF USED, MUST BE INSPECTED AND WELL-UNDERSTOOD PRIOR TO DEPLOYMENT                               #
+#     *    IF THE MACRO EMITS BAD JAVASCRIPT, YOU COULD BREAK BASIC FUNCTIONALITY ON THE MINGLE UI                        #
+#     *    OTHER DATABASE ACTIVITY, SUCH AS TRANSACTION COMMITS, SHOULD BE MONITORED AND AVOIDED                          #
+#                                                                                                                         #
+######################################################## CAUTION ##########################################################
+
+To install this macro via a git clone:
+
+  git clone git@github.com:nolman/transition_workflow.git
+  cd transition_workflow
+  rake macro:deploy MINGLE_LOCATION=/path/to/mingle_root
+
+where /path/to/mingle_root is the location where Mingle 3.2 is installed. 
+
+  * On Windows, this is the location that the installer installed Mingle at
+  * On OSX, this will be within the app bundle, at <mingle_application_bundle>/Contents/Resources/app
+  * On *NIX, this is the expanded archive
+
+The entire macro folder and its contents will be copied over into the vendor/plugins directory of that Mingle installation. Once deployed, the server will need to be restarted in order for the macro to become available for use.
+
+== LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2009 Your Name &lt;Your Email&gt;
+Copyright (c) 2010 ThoughtWorks, Inc.  All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

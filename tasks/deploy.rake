@@ -1,5 +1,7 @@
+# Copyright 2010 ThoughtWorks, Inc.  All rights reserved.
 namespace :macro do |ns|
-
+  
+  desc "Deploy the Transition Workflow Macro"
   task :deploy do
     macro_folder = File.expand_path(File.join(File.dirname(__FILE__), '..'))
     mingle_plugins_folder = File.join(ENV['MINGLE_LOCATION'], 'vendor', 'plugins')
