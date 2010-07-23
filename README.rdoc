@@ -1,5 +1,5 @@
 
-# Mingle Transition Workflow Macro
+== Mingle Transition Workflow Macro
 
 This tool provides support for adding web sequence diagrams (http://www.websequencediagram.com) to your Mingle project.
 
