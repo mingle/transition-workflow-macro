@@ -1,3 +1,4 @@
+# Copyright 2010 ThoughtWorks, Inc.  All rights reserved.
 begin
   require 'macro_development_toolkit'
 rescue LoadError

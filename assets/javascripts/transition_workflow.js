@@ -1,3 +1,4 @@
+// Copyright 2010 ThoughtWorks, Inc.  All rights reserved.
 function loadMinglePluginTransitionWorkflowFacade() {
 
   var XmlUtils = {
