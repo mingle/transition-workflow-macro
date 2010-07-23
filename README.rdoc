@@ -16,7 +16,7 @@ This tool provides support for adding web sequence diagrams (http://www.webseque
       *    IF THE MACRO EMITS BAD JAVASCRIPT, YOU COULD BREAK BASIC FUNCTIONALITY ON THE MINGLE UI
       *    OTHER DATABASE ACTIVITY, SUCH AS TRANSACTION COMMITS, SHOULD BE MONITORED AND AVOIDED
 
-== GETTING STARTED
+== INSTALLATION
 
 This Mingle custom macro requires Mingle 3.2 or greater.
 
@@ -35,6 +35,30 @@ where /path/to/mingle_root is the location where Mingle 3.2 is installed.
   * On *NIX, this is the expanded archive
 
 The entire macro folder and its contents will be copied over into the vendor/plugins directory of that Mingle installation. Once deployed, the server will need to be restarted in order for the macro to become available for use.
+
+== USING THE MACRO
+
+After completing the installation you can use the macro via the following markup on a Card or Wiki page:
+
+  {{
+    transition-workflow
+      card-type: story
+      card-property: status
+      title: My Mingle Workflow
+      style: napkin
+  }}
+
+Card-type and Card-property are both required to generate a transition workflow, these should map to the card type whose workflow you want to chart.  Title and style are optional parameters that you may provide, title will set a title above the chart, and style is used by http://www.websequencediagram.com to style your chart image.  The styles that http://www.websequencediagram.com support are:
+
+  default
+  earth
+  modern-blue
+  mscgen
+  omegapple
+  qsd
+  rose
+  roundgreen
+  napkin
 
 == LICENSE:
 
