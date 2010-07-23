@@ -12,11 +12,11 @@ describe 'MinglePluginTransitionWorkflow'
   describe '.createMarkup'
 
     it "should escape javascript injected via mingle xml"
-      var managedValues = managedTextValues.concat(["\u003Cscript type=\"text/javascript\"\u003E alert('hi')\u003C/script\u003E"]);
+      var managedValues = managedTextValues.concat(["&lt;script type=\"text/javascript\"&gt; alert('hi')&lt;/script&gt;"]);
       var expected = [
         'participant "New" as "New"',
-        'participant "\u003Cscript type=\"text/javascript\"\u003E alert(\'hi\')\u003C/script\u003E" as "\u003Cscript type=\"text/javascript\"\u003E alert(\'hi\')\u003C/script\u003E"',
-        '"New"->"\u003Cscript type=\"text/javascript\"\u003E alert(\'hi\')\u003C/script\u003E": get hacked'
+        'participant "&lt;script type=\"text/javascript\"&gt; alert(\'hi\')&lt;/script&gt;" as "&lt;script type=\"text/javascript\"&gt; alert(\'hi\')&lt;/script&gt;"',
+        '"New"->"&lt;script type=\"text/javascript\"&gt; alert(\'hi\')&lt;/script&gt;": get hacked'
       ];
       workflow.createMarkupAsync('Story', 'Status', managedValues, './data/xss_transition.xml', function(markup){
         markup.should_eql(expected);

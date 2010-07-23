@@ -48,7 +48,7 @@ function loadMinglePluginTransitionWorkflowFacade() {
           } else if (type == 'array') {
             value = [];
           } else {
-            value = nodeValue;
+            value = nodeValue.escapeHTML();
           }
         }
       } else {
