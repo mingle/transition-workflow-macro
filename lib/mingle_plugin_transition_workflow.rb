@@ -11,6 +11,7 @@ class MinglePluginTransitionWorkflow
     'roundgreen',
     'napkin'
   ]
+  CONTEXT_PATH = '' unless defined?(CONTEXT_PATH)
 
   attr_accessor :errors
 
@@ -74,10 +75,10 @@ class MinglePluginTransitionWorkflow
     html = <<-HTML
       #{header_tag if @title.present?}
       <div id="#{container_id}" style="width: 100%; overflow: auto">
-        <div class="loading">Loading...&nbsp;<img src="/images/spinner.gif"/></div>
+        <div class="loading">Loading...&nbsp;<img src="#{CONTEXT_PATH}/images/spinner.gif"/></div>
       </div>
 
-      <script src="/plugin_assets/transition_workflow/javascripts/transition_workflow.js?1279240904" type="text/javascript"></script>
+      <script src="#{CONTEXT_PATH}/plugin_assets/transition_workflow/javascripts/transition_workflow.js?1279240904" type="text/javascript"></script>
       <script type="text/javascript">
       //<![CDATA[
         document.observe("dom:loaded", function(e) {
@@ -85,7 +86,7 @@ class MinglePluginTransitionWorkflow
           var card_type = #{@card_type.to_json};
           var card_property = #{@card_property.to_json};
           var managed_text_values = [#{managed_text_values.map{|mv| ERB::Util.h(mv).inspect }.join(",")}]; 
-          facade.createMarkupAsync(card_type, card_property, managed_text_values, '/api/v2/projects/#{@project.identifier}/transitions.xml', function(markup) {
+          facade.createMarkupAsync(card_type, card_property, managed_text_values, '#{CONTEXT_PATH}/api/v2/projects/#{@project.identifier}/transitions.xml', function(markup) {
             var div = new Element('div', {className: 'wsd' , wsd_style: #{@style.to_json}});
             var pre = new Element('pre', {style: 'display:none;'});
             pre.innerHTML = markup.join("\\n");
