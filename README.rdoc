@@ -43,12 +43,12 @@ After completing the installation you can use the macro via the following markup
   {{
     transition-workflow
       card-type: story
-      card-property: status
+      property: status
       title: My Mingle Workflow
       style: napkin
   }}
 
-Card-type and Card-property are both required to generate a transition workflow, these should map to the card type whose workflow you want to chart.  Title and style are optional parameters that you may provide, title will set a title above the chart, and style is used by http://www.websequencediagram.com to style your chart image.  The styles that http://www.websequencediagram.com support are:
+Card-type and Property are both required to generate a transition workflow, these should map to the card type whose workflow you want to chart for a specific managed text property on a card.  Title and style are optional parameters that you may provide, title will set a title above the chart, and style is used by http://www.websequencediagram.com to style your chart image.  The styles that http://www.websequencediagram.com support are:
 
   default
   earth

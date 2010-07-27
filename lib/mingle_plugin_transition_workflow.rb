@@ -21,7 +21,7 @@ class MinglePluginTransitionWorkflow
     @title = @parameters['title'].to_s.strip
     @style = @parameters['style'].to_s.strip.downcase
     @style = STYLES.include?(@style) ? @style : 'default'
-    @card_property = @parameters['card-property']
+    @property = @parameters['property']
     @card_type = @parameters['card-type']
   end
 
@@ -32,7 +32,7 @@ class MinglePluginTransitionWorkflow
   end
   
   def property_definition_from_project
-    @project.property_definitions.detect { |pd| pd.name.downcase == @card_property.downcase }
+    @project.property_definitions.detect { |pd| pd.name.downcase == @property.downcase }
   end
 
   def card_type_from_project
@@ -40,18 +40,17 @@ class MinglePluginTransitionWorkflow
   end
 
   def property_definition_from_card_type
-    card_type_from_project.property_definitions.detect { |pd| pd.name.downcase == @card_property.to_s.downcase }
+    card_type_from_project.property_definitions.detect { |pd| pd.name.downcase == @property.to_s.downcase }
   end
  
   def validate
-
-    if @card_property.blank?
-      errors << "must specify card-property"
+    if @property.blank?
+      errors << "must specify property"
     else
       if (property_definition = property_definition_from_project).nil?
-        errors << "card-property #{bold(@card_property)} does not exist"
+        errors << "property #{bold(@property)} does not exist"
       elsif property_definition.type_description != Mingle::PropertyDefinition::MANAGED_TEXT_TYPE
-        errors << "card-property #{bold(@card_property)} is not a managed text list"
+        errors << "property #{bold(@property)} is not a managed text list"
       end
     end
 
@@ -61,7 +60,7 @@ class MinglePluginTransitionWorkflow
       if (card_type = card_type_from_project).nil?
         errors << "card-type #{bold(@card_type)} does not exist"
       elsif property_definition_from_card_type.nil?
-        errors << "card-type #{bold(@card_type)} does not have a #{bold(@card_property)} card-property"
+        errors << "card-type #{bold(@card_type)} does not have a #{bold(@property)} property"
       end
     end
   end
@@ -84,7 +83,7 @@ class MinglePluginTransitionWorkflow
         document.observe("dom:loaded", function(e) {
           var facade = new MinglePluginTransitionWorkflowFacade();
           var card_type = #{@card_type.to_json};
-          var card_property = #{@card_property.to_json};
+          var card_property = #{@property.to_json};
           var managed_text_values = [#{managed_text_values.map{|mv| ERB::Util.h(mv).inspect }.join(",")}]; 
           facade.createMarkupAsync(card_type, card_property, managed_text_values, '#{CONTEXT_PATH}/api/v2/projects/#{@project.identifier}/transitions.xml', function(markup) {
             var div = new Element('div', {className: 'wsd' , wsd_style: #{@style.to_json}});
