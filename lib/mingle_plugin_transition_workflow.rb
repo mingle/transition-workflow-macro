@@ -87,13 +87,11 @@ class MinglePluginTransitionWorkflow
           var managed_text_values = [#{managed_text_values.map{|mv| ERB::Util.h(mv).inspect }.join(",")}]; 
           facade.createMarkupAsync(card_type, card_property, managed_text_values, '#{CONTEXT_PATH}/api/v2/projects/#{@project.identifier}/transitions.xml', function(markup) {
             var div = new Element('div', {className: 'wsd' , wsd_style: #{@style.to_json}});
-            var pre = new Element('pre', {style: 'display:none;'});
-            pre.innerHTML = markup.join("\\n");
-            div.appendChild(pre);
+            div.innerHTML = "<pre style='display:none;'>" + markup.join("\\n") + "</pre>";
             var script = new Element('script', {type: 'text/javascript', src: 'http://www.websequencediagrams.com/service.js'});
-            div.appendChild(script);
             $("#{container_id}").down(".loading").remove();
             $("#{container_id}").appendChild(div);
+            $("#{container_id}").appendChild(script);
           }, function(e) {
             $("#{container_id}").childElements()[0].innerHTML = "Error while rendering transition workflow: " + e.message;
           });
