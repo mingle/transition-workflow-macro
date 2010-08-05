@@ -69,14 +69,21 @@ function loadMinglePluginTransitionWorkflowFacade() {
 
   var Transition = {
     asWorkflowMarkup: function(property_name) {
-      var withSamePropertyName = function(property) {
-        return property.name.toLowerCase() == property_name.toLowerCase();
-      };
-
       var from = this.findFromProperty(property_name).value;
-      var to = this.will_set_card_properties.detect(withSamePropertyName).value;
-
+      var to = this.transitionsTo(property_name);
       return {from: from, to: to, name: this.name};
+    },
+    
+    transitionsTo: function(propName){
+      var withSamePropertyName = function(property) {
+        return property.name.toLowerCase() == propName.toLowerCase();
+      };
+      var willSetProperty = this.will_set_card_properties.detect(withSamePropertyName);
+      if(willSetProperty){
+        return willSetProperty.value;
+      }else{
+        return this.if_card_has_properties.detect(withSamePropertyName).value;
+      }
     },
     
     findFromProperty: function(propName) {
@@ -114,9 +121,11 @@ function loadMinglePluginTransitionWorkflowFacade() {
       return Object.extend(result, TransitionFilters);
     },
 
-    thatModifyPropertyDefinition: function(propName) {
+    thatInvolvePropertyDefinition: function(propName) {
       return Object.extend(this.select(function(t) {
         return t.will_set_card_properties.any(function(property) {
+          return property.name.toLowerCase() == propName.toLowerCase();
+        }) || t.if_card_has_properties.any(function(property) {
           return property.name.toLowerCase() == propName.toLowerCase();
         });
       }), TransitionFilters);
@@ -209,7 +218,7 @@ function loadMinglePluginTransitionWorkflowFacade() {
       if (this._memoizedMarkups == null) {
         this._memoizedMarkups = this.transitions
                 .findByCardTypeName(this.cardTypeName)
-                .thatModifyPropertyDefinition(this.propertyName)
+                .thatInvolvePropertyDefinition(this.propertyName)
                 .sortByPropertyDefinition(this.propertyName, this.managedValues)
                 .asWorkflowMarkup(this.propertyName);
       }

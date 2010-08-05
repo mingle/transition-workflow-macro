@@ -68,13 +68,13 @@ describe 'MinglePluginTransitionWorkflow'
 
     it 'filter transitions that modify a specific property definition'
       var transitions = workflow.parseTransitions(getData('transitions'));
-      transitions.thatModifyPropertyDefinition('Status').length.should_equal(12);
+      transitions.thatInvolvePropertyDefinition('Status').length.should_equal(12);
     end
 
     it 'filter transitions by property definition & card type'
       var transitions = workflow.parseTransitions(getData('transitions'));
-      transitions.findByCardTypeName('Story').thatModifyPropertyDefinition('Status').length.should_equal(12);
-      transitions.thatModifyPropertyDefinition('Status').findByCardTypeName('Story').length.should_equal(12);
+      transitions.findByCardTypeName('Story').thatInvolvePropertyDefinition('Status').length.should_equal(12);
+      transitions.thatInvolvePropertyDefinition('Status').findByCardTypeName('Story').length.should_equal(12);
     end
 
     it 'find the starting and ending transitions'
@@ -165,6 +165,15 @@ describe 'MinglePluginTransitionWorkflow'
         '"(any)"->"New": any_to_new',
         '"(set)"->"(not set)": set_to_not_set',
         '"(not set)"->"New": not_set_to_new'
+      ];
+      orderedMarkup.should_eql(expected);
+    end
+
+    it "should create self referencial transitions if will_set_card_properties doesn't set property"
+      var orderedMarkup = workflow.createTransitionWorkflow('story', 'status', managedTextValues, getData('new_to_no_change_transition')).markup();
+      var expected = [
+        'participant "New" as "New"',
+        '"New"->"New": no change to status'
       ];
       orderedMarkup.should_eql(expected);
     end
