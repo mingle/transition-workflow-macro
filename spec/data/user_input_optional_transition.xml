@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transitions type="array">
+  <transition>
+    <id type="integer">132</id>
+    <name>status not set to user input optional</name>
+    <require_comment type="boolean">false</require_comment>
+<transition_execution_url>http://localhost:4001/api/v2/projects/transition_workflow_test/transition_executions/132.xml</transition_execution_url>
+    <user_input_required type="array">
+    </user_input_required>
+    <user_input_optional type="array">
+      <property_definition url="http://localhost:4001/api/v2/projects/transition_workflow_test/property_definitions/276.xml">
+        <id type="integer">276</id>
+        <name>Status</name>
+        <description nil="true"></description>
+        <data_type>string</data_type>
+        <is_numeric type="boolean">false</is_numeric>
+        <hidden type="boolean">false</hidden>
+        <restricted type="boolean">true</restricted>
+        <transition_only type="boolean">true</transition_only>
+        <project url="http://localhost:4001/api/v2/projects/transition_workflow_test.xml">
+          <name>transition workflow test</name>
+          <identifier>transition_workflow_test</identifier>
+        </project>
+        <column_name>cp_status</column_name>
+        <position nil="true"></position>
+        <property_values_description>Managed text list</property_values_description>
+        <card_types type="array">
+          <card_type url="http://localhost:4001/api/v2/projects/transition_workflow_test/card_types/52.xml">
+            <name>Story</name>
+          </card_type>
+        </card_types>
+        <property_value_details type="array">
+          <property_value>
+            <value>New</value>
+          </property_value>
+          <property_value>
+            <value>Ready for Analysis</value>
+          </property_value>
+          <property_value>
+            <value>In Analysis</value>
+          </property_value>
+          <property_value>
+            <value>Ready for Development</value>
+          </property_value>
+          <property_value>
+            <value>In Development</value>
+          </property_value>
+          <property_value>
+
+            <value>In BA Review</value>
+          </property_value>
+          <property_value>
+            <value>Ready for Testing</value>
+          </property_value>
+          <property_value>
+            <value>In Testing</value>
+
+          </property_value>
+          <property_value>
+            <value>Ready for Signoff</value>
+          </property_value>
+          <property_value>
+            <value>Accepted</value>
+          </property_value>
+        </property_value_details>
+
+        <is_managed type="boolean">true</is_managed>
+      </property_definition>
+    </user_input_optional>
+    <if_card_has_properties type="array">
+      <property type_description="Managed text list" hidden="false">
+        <name>Status</name>
+        <value nil="true"></value>
+      </property>
+    </if_card_has_properties>
+    <if_card_has_properties_set type="array">
+    </if_card_has_properties_set>
+    <will_set_card_properties type="array">
+    </will_set_card_properties>
+    <card_type url="http://localhost:4001/api/v2/projects/transition_workflow_test/card_types/52.xml">
+      <name>Story</name>
+    </card_type>
+  </transition>
+</transitions>

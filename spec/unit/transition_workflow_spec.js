@@ -169,12 +169,24 @@ describe 'MinglePluginTransitionWorkflow'
       orderedMarkup.should_eql(expected);
     end
 
-    it "should create self referencial transitions if will_set_card_properties doesn't set property"
+    it "should create self referential transitions if will_set_card_properties doesn't set property"
       var orderedMarkup = workflow.createTransitionWorkflow('story', 'status', managedTextValues, getData('new_to_no_change_transition')).markup();
       var expected = [
         'participant "New" as "New"',
         '"New"->"New": no change to status'
       ];
+      orderedMarkup.should_eql(expected);
+    end
+
+    it "should not create self referential transitions if it is a user_input_optional transition"
+      var orderedMarkup = workflow.createTransitionWorkflow('story', 'status', managedTextValues, getData('user_input_optional_transition')).markup();
+      var expected = [];
+      orderedMarkup.should_eql(expected);
+    end
+
+    it "should not create self referential transitions if it is a user_input_required transition"
+      var orderedMarkup = workflow.createTransitionWorkflow('story', 'status', managedTextValues, getData('user_input_required_transition')).markup();
+      var expected = [];
       orderedMarkup.should_eql(expected);
     end
 

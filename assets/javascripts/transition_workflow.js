@@ -103,6 +103,26 @@ function loadMinglePluginTransitionWorkflowFacade() {
       return this.will_set_card_properties.detect(function(property) {
         return property.name.toLowerCase() == propertyName.toLowerCase();
       });
+    },
+  
+    willSet: function(propertyName) {
+      return this.will_set_card_properties.any(function(property) {
+        return property.name.toLowerCase() == propertyName.toLowerCase();
+      });
+    },
+    
+    has: function(propertyName) {
+      return this.if_card_has_properties.any(function(property) {
+        return property.name.toLowerCase() == propertyName.toLowerCase();
+      });
+    },
+    
+    userInputOptionalOrRequired: function(propertyName) {
+      return this.user_input_optional.any(function(propertyDefinition) {
+        return propertyDefinition.name.toLowerCase() == propertyName.toLowerCase();
+      }) || this.user_input_required.any(function(propertyDefinition) {
+        return propertyDefinition.name.toLowerCase() == propertyName.toLowerCase();
+      });
     }
   };
 
@@ -121,13 +141,9 @@ function loadMinglePluginTransitionWorkflowFacade() {
       return Object.extend(result, TransitionFilters);
     },
 
-    thatInvolvePropertyDefinition: function(propName) {
-      return Object.extend(this.select(function(t) {
-        return t.will_set_card_properties.any(function(property) {
-          return property.name.toLowerCase() == propName.toLowerCase();
-        }) || t.if_card_has_properties.any(function(property) {
-          return property.name.toLowerCase() == propName.toLowerCase();
-        });
+    thatInvolvePropertyDefinition: function(propertyName) {
+      return Object.extend(this.select(function(transition) {
+        return transition.willSet(propertyName) || (transition.has(propertyName) && !transition.userInputOptionalOrRequired(propertyName));
       }), TransitionFilters);
     },
   
