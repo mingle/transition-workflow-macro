@@ -99,30 +99,22 @@ function loadMinglePluginTransitionWorkflowFacade() {
       return this.if_card_has_properties.concat(set_properties);
     },
 
-    findWillSetPropertyByPropertyName: function(propertyName) {
-      return this.will_set_card_properties.detect(function(property) {
+    sameNameAs: function(propertyName){
+      return function(property) {
         return property.name.toLowerCase() == propertyName.toLowerCase();
-      });
+      }
     },
-  
+
     willSet: function(propertyName) {
-      return this.will_set_card_properties.any(function(property) {
-        return property.name.toLowerCase() == propertyName.toLowerCase();
-      });
+      return this.will_set_card_properties.any(this.sameNameAs(propertyName));
     },
     
     has: function(propertyName) {
-      return this.if_card_has_properties.any(function(property) {
-        return property.name.toLowerCase() == propertyName.toLowerCase();
-      });
+      return this.if_card_has_properties.any(this.sameNameAs(propertyName));
     },
     
     userInputOptionalOrRequired: function(propertyName) {
-      return this.user_input_optional.any(function(propertyDefinition) {
-        return propertyDefinition.name.toLowerCase() == propertyName.toLowerCase();
-      }) || this.user_input_required.any(function(propertyDefinition) {
-        return propertyDefinition.name.toLowerCase() == propertyName.toLowerCase();
-      });
+      return this.user_input_optional.any(this.sameNameAs(propertyName)) || this.user_input_required.any(this.sameNameAs(propertyName));
     }
   };
 
