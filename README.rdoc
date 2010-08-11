@@ -60,6 +60,8 @@ Card-type and Property are both required to generate a transition workflow, thes
   roundgreen
   napkin
 
+This macro relies on third-party web sequence diagram web services from http://www.websequencediagrams.com/ that are copyright Steve Hanov.  Use of same is subject to any license imposed by the copyright holder.
+
 == LICENSE:
 
 (The MIT License)
