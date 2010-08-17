@@ -18,7 +18,7 @@ describe 'MinglePluginTransitionWorkflow'
         'participant "&lt;script type=\"text/javascript\"&gt; alert(\'hi\')&lt;/script&gt;" as "&lt;script type=\"text/javascript\"&gt; alert(\'hi\')&lt;/script&gt;"',
         '"New"->"&lt;script type=\"text/javascript\"&gt; alert(\'hi\')&lt;/script&gt;": get hacked'
       ];
-      workflow.createMarkupAsync('Story', 'Status', managedValues, './data/xss_transition.xml', function(markup){
+      workflow.createMarkupAsync(true, 'Story', 'Status', managedValues, './data/xss_transition.xml', function(markup){
         markup.should_eql(expected);
       });
     end
@@ -130,6 +130,13 @@ describe 'MinglePluginTransitionWorkflow'
       transitions.length.should_eql(12);
     end
 
+    it "should filter out participants that apply to the to or from transitions"
+      var managedTextValuesSubset = ['Accepted', 'Ready for Signoff', 'New']
+      var participants = workflow.createTransitionWorkflow('story', 'status', managedTextValuesSubset, getData("accepted_transition"), true).participants();
+      var expected = ['participant "Accepted" as "Accepted"', 'participant "Ready for Signoff" as "Ready for Signoff"', 'participant "New" as "New"'];
+      participants.should_eql(expected);
+    end
+    
     it "should filter out participants that apply to the to or from transitions"
       var participants = workflow.createTransitionWorkflow('story', 'statuS', managedTextValues, getData("accepted_transition")).participants();
       var expected = ['participant "Ready for Signoff" as "Ready for Signoff"', 'participant "Accepted" as "Accepted"'];

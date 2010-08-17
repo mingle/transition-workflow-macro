@@ -23,6 +23,7 @@ class MinglePluginTransitionWorkflow
     @style = STYLES.include?(@style) ? @style : 'default'
     @property = @parameters['property']
     @card_type = @parameters['card-type']
+    @values_without_transitions = @parameters['values-without-transitions'].nil? ? true : @parameters['values-without-transitions']
   end
 
   def valid?
@@ -85,7 +86,8 @@ class MinglePluginTransitionWorkflow
           var card_type = #{@card_type.to_json};
           var card_property = #{@property.to_json};
           var managed_text_values = [#{managed_text_values.map{|mv| ERB::Util.h(mv).inspect }.join(",")}]; 
-          facade.createMarkupAsync(card_type, card_property, managed_text_values, '#{CONTEXT_PATH}/api/v2/projects/#{@project.identifier}/transitions.xml', function(markup) {
+          var valuesWithoutTransitions = #{@values_without_transitions.to_json};
+          facade.createMarkupAsync(valuesWithoutTransitions, card_type, card_property, managed_text_values, '#{CONTEXT_PATH}/api/v2/projects/#{@project.identifier}/transitions.xml', function(markup) {
             var div = new Element('div', {className: 'wsd' , wsd_style: #{@style.to_json}});
             div.innerHTML = "<pre style='display:none;'>" + markup.join("\\n") + "</pre>";
             var script = new Element('script', {type: 'text/javascript', src: 'http://www.websequencediagrams.com/service.js'});

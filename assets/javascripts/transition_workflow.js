@@ -194,20 +194,29 @@ function loadMinglePluginTransitionWorkflowFacade() {
   });
 
   var TransitionWorkflow = Class.create({
-    initialize: function(cardTypeName, propertyName, managedValues, transitions) {
+    initialize: function(cardTypeName, propertyName, managedValues, transitions, allValuesAsParticipants) {
+      this.allValuesAsParticipants = allValuesAsParticipants;
       this.cardTypeName = cardTypeName;
       this.propertyName = propertyName;
-      this.managedValues =  $A(['(any)', '(set)', '(not set)']).concat(managedValues);
+      this.originalManagedValues = managedValues;
+      this.transitionPropertyExtraValues = $A(['(any)', '(set)', '(not set)']);
+      this.managedValues = this.transitionPropertyExtraValues.concat(managedValues);
       this.transitions = transitions;
     },
     
     participants: function() {
       var transitionMarkups = this._transitionMarkups();
-      return this.managedValues.select(function(managedValue){
+      var participantValues = this.managedValues.select(function(managedValue){
           return transitionMarkups.any(function(transitionMarkup) {
             return transitionMarkup.from == managedValue || transitionMarkup.to == managedValue;
           });
-      }).collect(function(participant) { 
+      })
+      if (this.allValuesAsParticipants) {
+        participantValues = participantValues.select(function(value) {
+          return this.transitionPropertyExtraValues.include(value)
+        }.bind(this)).concat(this.originalManagedValues);
+      }
+      return participantValues.collect(function(participant) { 
         return 'participant "#{name}" as "#{name}"'.interpolate({ name : participant }); 
       });
     },
@@ -235,12 +244,12 @@ function loadMinglePluginTransitionWorkflowFacade() {
   })
 
   var Facade = Class.create({
-    createMarkupAsync: function(cardTypeName, propertyName, managedValues, transitionsPath, callback, errorCallback) {
+    createMarkupAsync: function(allValuesAsParticipants, cardTypeName, propertyName, managedValues, transitionsPath, callback, errorCallback) {
 
       new Ajax.Request(transitionsPath, {method: 'get', onSuccess: function(transport) {
         var transitions = transport.responseXML.documentElement;
         try {
-          var markup = this.createTransitionWorkflow(cardTypeName, propertyName, managedValues, transitions).markup();
+          var markup = this.createTransitionWorkflow(cardTypeName, propertyName, managedValues, transitions, allValuesAsParticipants).markup();
           callback(markup);
         }catch(e) {
           errorCallback(e);
@@ -248,8 +257,8 @@ function loadMinglePluginTransitionWorkflowFacade() {
       }.bind(this)});
     },
 
-    createTransitionWorkflow: function(cardTypeName, propertyName, managedValues, transitionsXml) {
-      return new TransitionWorkflow(cardTypeName, propertyName, managedValues, this.parseTransitions(transitionsXml));
+    createTransitionWorkflow: function(cardTypeName, propertyName, managedValues, transitionsXml, allValuesAsParticipants) {
+      return new TransitionWorkflow(cardTypeName, propertyName, managedValues, this.parseTransitions(transitionsXml), allValuesAsParticipants);
     },
 
     parseTransitions: function(xml){

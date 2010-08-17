@@ -99,4 +99,15 @@ class TestMinglePluginTransitionWorkflow < Test::Unit::TestCase
     assert_match %(["In Progress"]), macro.execute
   end
 
+  def test_should_set_all_values_as_participants
+    macro = MinglePluginTransitionWorkflow.new({'card-type' => 'story', 'property' => "status", 'values-without-transitions' => false}, PROJECT_STUB)
+    assert_match "var valuesWithoutTransitions = false;", macro.execute
+  end
+
+  def test_should_default_values_without_transitions_to_true
+    macro = MinglePluginTransitionWorkflow.new({'card-type' => 'story', 'property' => "status"}, PROJECT_STUB)
+    assert_match "var valuesWithoutTransitions = true;", macro.execute
+  end
+
+
 end
