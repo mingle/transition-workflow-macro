@@ -10,7 +10,7 @@ task :test => ['test:units', 'test:javascripts']
 require 'rake/packagetask'
 
 Rake::PackageTask.new("transition_workflow", "1.0.0") do |p|
-  p.need_tar = true
+  p.need_zip = true
   p.package_files.include("*")
 end
 
