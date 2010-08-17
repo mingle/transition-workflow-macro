@@ -109,5 +109,18 @@ class TestMinglePluginTransitionWorkflow < Test::Unit::TestCase
     assert_match "var valuesWithoutTransitions = true;", macro.execute
   end
 
+  def test_should_use_width_and_height_if_specified
+    macro = MinglePluginTransitionWorkflow.new({'card-type' => 'story', 'property' => "status", 'image-width' => '500', 'image-height' => '300'}, PROJECT_STUB)
+    assert_match /\.wsd\s*img\s*\{\s*width:500px;\s*height:300px;/, macro.execute
+  end
 
+  def test_should_use_width_and_height_if_specified
+    macro = MinglePluginTransitionWorkflow.new({'card-type' => 'story', 'property' => "status", 'image-width' => '500'}, PROJECT_STUB)
+    assert_match /\.wsd\s*img\s*\{\s*width:500px;\s*\}/, macro.execute
+  end
+
+  def test_should_use_width_and_height_if_specified
+    macro = MinglePluginTransitionWorkflow.new({'card-type' => 'story', 'property' => "status", 'image-height' => 'alert(\'hi\');'}, PROJECT_STUB)
+    assert_match /\.wsd\s*img\s*\{\s*height:0px;\s*\}/, macro.execute
+  end
 end

@@ -23,7 +23,13 @@ class MinglePluginTransitionWorkflow
     @style = STYLES.include?(@style) ? @style : 'default'
     @property = @parameters['property']
     @card_type = @parameters['card-type']
+    @image_width = image_style('width')
+    @image_height = image_style('height')
     @values_without_transitions = @parameters['values-without-transitions'].nil? ? true : @parameters['values-without-transitions']
+  end
+
+  def image_style(name)
+    @parameters["image-#{name}"].blank? ? "" : "#{name}:#{@parameters["image-#{name}"].to_i}px;"
   end
 
   def valid?
@@ -77,7 +83,12 @@ class MinglePluginTransitionWorkflow
       <div id="#{container_id}" style="width: 100%; overflow: auto">
         <div class="loading">Loading...&nbsp;<img src="#{CONTEXT_PATH}/images/spinner.gif"/></div>
       </div>
-
+      <style>
+        .wsd img {
+          #{@image_width}
+          #{@image_height}
+        }
+      </style>
       <script src="#{CONTEXT_PATH}/plugin_assets/transition_workflow/javascripts/transition_workflow.js?1279240904" type="text/javascript"></script>
       <script type="text/javascript">
       //<![CDATA[
