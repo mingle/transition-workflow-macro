@@ -1,5 +1,6 @@
 # Copyright 2010 ThoughtWorks, Inc.  All rights reserved.
 class MinglePluginTransitionWorkflow
+  VERSION="1.0.0"
   STYLES = [
     'default',
     'earth',
