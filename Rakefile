@@ -11,5 +11,5 @@ require 'rake/packagetask'
 Rake::PackageTask.new("transition_workflow", :noversion) do |p|
   p.name = "transition_workflow"
   p.need_zip = true
-  p.package_files.include("*")
+  p.package_files.include("lib/**/*", "assets/**/*", "spec/**/*", "test/**/*", "*", "tasks/*")
 end
