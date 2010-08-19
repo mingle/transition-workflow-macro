@@ -46,17 +46,17 @@ After completing the installation you can use the macro via the following markup
       property: status
       title: My Mingle Workflow
       values-without-transitions: true
-      image-width: 400
-      image-height: 400
+      width: 400
+      height: 400
       style: napkin
   }}
 
-Card-type and Property are both required to generate a transition workflow, these should map to the card type whose workflow you want to chart for a specific managed text property on a card.  Title, style, values-without-transitions, image-width, and image-height are optional parameters that you may provide. 
+Card-type and Property are both required to generate a transition workflow, these should map to the card type whose workflow you want to chart for a specific managed text property on a card.  Title, style, values-without-transitions, width, and height are optional parameters that you may provide. 
 
 Title will set a title above the chart.
 Values-without-transitions will toggle the displaying of unused transitions, the default value is true.
-Image-width will set the pixel width of the image.
-Image-height will set the pixel height of the image.
+Width will set the pixel width of the image.
+Height will set the pixel height of the image.
 Style is used by http://www.websequencediagram.com to style your chart image.  The styles that http://www.websequencediagram.com support are:
 
   default

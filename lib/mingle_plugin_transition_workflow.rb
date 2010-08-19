@@ -30,7 +30,7 @@ class MinglePluginTransitionWorkflow
   end
 
   def image_style(name)
-    @parameters["image-#{name}"].blank? ? "" : "#{name}:#{@parameters["image-#{name}"].to_i}px;"
+    @parameters["#{name}"].blank? ? "" : "#{name}:#{@parameters["#{name}"].to_i}px;"
   end
 
   def valid?
